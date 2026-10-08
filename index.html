@@ -1,0 +1,1004 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>김동환 · 포트폴리오</title>
+<meta name="description" content="현장 기획·운영과 AI를 활용한 업무 자동화로 스포츠 기록 데이터 업무를 바꿔 온 김동환의 포트폴리오">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root {
+    --ink: #0E2A1F;        /* 잔디 잉크: 제목·본문 */
+    --text: #2B4136;       /* 본문 보조 */
+    --paper: #FFFFFF;      /* 배경: 흰색 */
+    --pitch: #1D5E40;      /* 피치: 경기장 블록 */
+    --pitch-deep: #164A33;
+    --chalk: #D5E0D8;      /* 분필: 구분선 */
+    --chip: #E4ECE6;
+    --muted: #56675E;      /* 보조 텍스트 (paper 위 5.5:1) */
+    --goal: #E8B21E;       /* 옐로카드: 골·알림 강조 */
+    --line-w: rgba(255,255,255,.55);
+    --wide: 72rem;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-size: 1.0625rem; line-height: 1.75; word-break: keep-all; overflow-wrap: break-word;
+    font-feature-settings: "tnum" 1;
+  }
+  p, li, figcaption, dd { text-wrap: pretty; }
+  h1, h2, h3, h4, .gallery figcaption, .numbers span, .pipeline span, .toast span, .checker-note, .tools dd { text-wrap: balance; }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: inherit; text-underline-offset: .2em; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 3px solid var(--goal); outline-offset: 3px; border-radius: 2px; }
+  .wrap { max-width: var(--wide); margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 1rem; top: 1rem; background: var(--ink); color: #fff; padding: .5rem 1rem; z-index: 10; }
+
+  /* 상단 띠: 3D 리플레이 화면을 흐리게 깔아 아래 내용과 구분 */
+  .masthead { position: relative; isolation: isolate; overflow: hidden; background: #0B2219; color: #fff; }
+  .masthead::before { content: ""; position: absolute; inset: -40px; z-index: -2; background: url("assets/shots/masthead_bg.jpg") center / cover no-repeat; filter: blur(7px) saturate(.9); opacity: .9; }
+  .masthead::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(100deg, rgba(9,28,20,.94) 0%, rgba(9,28,20,.84) 42%, rgba(9,28,20,.5) 75%, rgba(9,28,20,.38) 100%); }
+  .top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem 1rem; padding-top: 1.5rem; }
+  .top .name { display: inline-flex; align-items: center; gap: .6rem; font-weight: 800; letter-spacing: -.02em; font-size: 1.125rem; text-decoration: none; color: #fff; }
+  .avatar { width: 2.5rem; height: 2.5rem; flex: none; overflow: visible; }
+  .top nav { display: flex; flex-wrap: wrap; gap: .5rem; font-size: .9375rem; }
+  .top nav a { text-decoration: none; color: #fff; padding: .4rem 1rem; border-radius: 999px; background: rgba(255,255,255,.1); box-shadow: inset 0 0 0 1px rgba(255,255,255,.28); transition: background .2s ease, color .2s ease; }
+  .top nav a:hover { background: #fff; color: var(--ink); }
+
+  /* 히어로 */
+  .hero { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 3rem; align-items: center; padding-top: 4.5rem; padding-bottom: 5.5rem; }
+  .hero h1 { font-size: clamp(2rem, 3.7vw, 3.25rem); line-height: 1.22; letter-spacing: -.035em; font-weight: 800; margin: 0 0 1.5rem; }
+  .hero h1 { color: #fff; }
+  .nw { white-space: nowrap; }
+  .hero p { color: rgba(255,255,255,.86); margin: 0 0 1rem; }
+  .proof { list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .45rem; }
+  .proof li { font-size: .875rem; font-weight: 600; padding: .3rem .8rem; border-radius: 999px; background: rgba(232,178,30,.16); color: #FFE7A3; box-shadow: inset 0 0 0 1px rgba(232,178,30,.45); }
+  .masthead .btn { background: #fff; color: var(--ink); }
+  .masthead .btn:hover { background: var(--goal); }
+  .masthead .btn.ghost { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.75); }
+  .masthead .btn.ghost:hover { background: #fff; color: var(--ink); }
+  .hero .links { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: .7rem 1.25rem; border-radius: 999px; background: var(--ink); color: #fff; text-decoration: none; font-weight: 600; font-size: .9375rem; }
+  .btn:hover { background: var(--pitch); }
+  .btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+  .btn.ghost:hover { background: var(--ink); color: #fff; }
+
+  .play { margin: 0; background: var(--pitch); border-radius: 14px; padding: 1.25rem 1.25rem 1rem; color: #fff; box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 24px 48px -24px rgba(0,0,0,.6); }
+  .play-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font-size: .875rem; margin-bottom: .75rem; flex-wrap: wrap; }
+  .play-head strong { font-size: 1rem; letter-spacing: -.01em; }
+  .play-head span { color: rgba(255,255,255,.8); }
+  .pitch { width: 100%; height: auto; display: block; border-radius: 6px; background: var(--pitch-deep); }
+  .pitch .ln { fill: none; stroke: var(--line-w); stroke-width: .35; }
+  .pitch .stripe { fill: rgba(255,255,255,.035); }
+  .pitch .pass { fill: none; stroke: #fff; stroke-width: .7; stroke-linecap: round; }
+  .pitch .carry { fill: none; stroke: #fff; stroke-width: .55; stroke-dasharray: 1 1.4; stroke-linecap: round; }
+  .pitch .shot { fill: none; stroke: var(--goal); stroke-width: .9; stroke-linecap: round; }
+  .pitch .dot { fill: #fff; }
+  .pitch .dot.scorer { fill: var(--goal); }
+  .pitch .num { font-size: 2.3px; font-weight: 700; fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+  .pitch .tag { font-size: 2.6px; font-weight: 600; fill: #fff; }
+  .log { list-style: none; margin: .9rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; font-size: .875rem; }
+  .log li { padding: .55rem .7rem; border-radius: 8px; background: rgba(255,255,255,.08); line-height: 1.45; transition: background .3s ease; }
+  .log li b { display: block; font-size: .8125rem; font-weight: 600; color: rgba(255,255,255,.88); }
+  .log li.on { background: rgba(255,255,255,.2); }
+  .log li.on.g { background: var(--goal); color: var(--ink); }
+  .log li.on.g b { color: var(--ink); }
+  .play-foot { display: flex; justify-content: space-between; align-items: center; margin-top: .8rem; font-size: .8125rem; color: rgba(255,255,255,.8); gap: 1rem; }
+  .replay { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.6); border-radius: 999px; padding: .35rem .9rem; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .replay:hover { background: #fff; color: var(--pitch); }
+
+  /* 섹션 공통 */
+  section.block { border-top: 1px solid var(--chalk); padding: 4.5rem 0; }
+  main > section.block:first-child { border-top: 0; }
+  .sec-title { font-size: 1.75rem; letter-spacing: -.03em; font-weight: 800; margin: 0 0 .5rem; }
+  .sec-lead { color: var(--muted); margin: 0 0 3rem; }
+
+  /* 프로젝트 */
+  .project { padding: 3.5rem 0; border-top: 1px solid var(--chalk); }
+  .project:first-of-type { border-top: 0; padding-top: 0; }
+  .p-head { margin-bottom: 2rem; }
+  .p-head h3 { font-size: clamp(1.75rem, 3vw, 2.375rem); line-height: 1.25; letter-spacing: -.03em; font-weight: 800; margin: 0; }
+  .p-head .summary { color: var(--muted); margin: 1rem 0 0; }
+  .demo-flag { margin: .9rem 0 0; padding: .7rem 1rem; border-radius: 10px; background: #FFF6DA; color: var(--ink); font-size: .9375rem; box-shadow: inset 3px 0 0 var(--goal); }
+  .meta { display: flex; flex-wrap: wrap; gap: .4rem; margin: .9rem 0 0; padding: 0; list-style: none; }
+  .meta li { font-size: .8125rem; padding: .2rem .65rem; border-radius: 999px; background: var(--chip); color: var(--ink); }
+
+  /* 문제·한 일·결과: 왼쪽 이름, 오른쪽 넓은 본문 */
+  .story { margin-top: 2.5rem; border-bottom: 1px solid var(--chalk); }
+  .story > div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1.5rem; padding: 1rem 0; border-top: 1px solid var(--chalk); }
+  .story h4 { font-size: 1rem; margin: 0; letter-spacing: -.01em; line-height: 1.75; }
+  .story p { margin: 0; color: var(--text); }
+  .story ul { margin: 0; padding-left: 1.1rem; color: var(--text); }
+  .story li + li { margin-top: .3rem; }
+
+  /* 갤러리 */
+  .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+  .gallery figure { margin: 0; }
+  .gallery figure.big { grid-column: 1 / -1; }
+  .gallery a { display: block; border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 1px var(--chalk); background: #fff; }
+  .gallery img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+  .replay3d { position: relative; border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 1px var(--chalk); background: #07100c; }
+  .replay3d img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; filter: brightness(.72); transition: filter .3s ease; }
+  .replay3d:hover img { filter: brightness(.6); }
+  .replay3d iframe { display: block; width: 100%; height: 52rem; border: 0; background: #07100c; }
+  .play3d { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: .9rem; padding: .9rem 1.4rem .9rem .9rem; border: 0; border-radius: 999px; background: #fff; color: var(--ink); font: inherit; text-align: left; cursor: pointer; box-shadow: 0 18px 40px -16px rgba(0,0,0,.7); transition: transform .2s ease; }
+  .play3d:hover { transform: translate(-50%, -50%) scale(1.03); }
+  .play3d-icon { width: 3rem; height: 3rem; border-radius: 50%; display: grid; place-items: center; background: var(--goal); color: var(--ink); flex: none; }
+  .play3d b { display: block; font-size: 1.0625rem; }
+  .play3d small { display: block; font-size: .8125rem; color: var(--muted); }
+  .gallery figcaption { font-size: .875rem; color: var(--muted); margin-top: .5rem; line-height: 1.55; }
+  .gallery figure.big figcaption { font-size: .9375rem; }
+
+  .numbers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 2.5rem; border-top: 2px solid var(--ink); }
+  .numbers div { padding: 1.1rem 1.25rem 0 0; }
+  .numbers div + div { padding-left: 1.25rem; border-left: 1px solid var(--chalk); }
+  .numbers strong { display: block; font-size: 1.75rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; }
+  .numbers span { display: block; font-size: .9063rem; color: var(--muted); line-height: 1.55; margin-top: .3rem; }
+
+  /* 검증 도구 예시 화면 */
+  .checker { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; background: #fff; border-radius: 12px; box-shadow: 0 0 0 1px var(--chalk); padding: 1.25rem; }
+  .checker h5 { margin: 0 0 .6rem; font-size: .9375rem; display: flex; justify-content: space-between; }
+  .checker h5 span { font-weight: 500; color: var(--muted); font-size: .8125rem; }
+  .checker ol { list-style: none; margin: 0; padding: 0; font-size: .9063rem; }
+  .checker li { display: grid; grid-template-columns: 2.75rem 2.25rem minmax(0, 1fr) auto; gap: .5rem; align-items: center; padding: .45rem .6rem; border-radius: 6px; }
+  .checker li:nth-child(odd) { background: #F5F8F5; }
+  .checker li .pos { color: var(--muted); font-size: .8125rem; }
+  .checker li .no { font-weight: 700; }
+  .checker li.bad { background: #FCEBD0; box-shadow: inset 3px 0 0 var(--goal); }
+  .checker li .flag { font-size: .75rem; font-weight: 700; background: var(--goal); color: var(--ink); border-radius: 4px; padding: .05rem .4rem; }
+  .checker-note { grid-column: 1 / -1; font-size: .8125rem; color: var(--muted); margin: .25rem 0 0; }
+
+  .checker li { transition: background .3s ease, box-shadow .3s ease; }
+  .checker li .flag { transition: opacity .25s ease, transform .3s cubic-bezier(.3,1.6,.5,1); }
+  .checker li:not(.bad):not(.okay) .flag { opacity: 0; transform: scale(.6); }
+  .checker li.okay .flag { background: #DDEBE1; color: var(--pitch); }
+  .checker li.scan { box-shadow: inset 0 0 0 2px var(--pitch); }
+  .check-status { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .6rem; padding: .7rem .9rem; border-radius: 8px; background: var(--ink); color: #fff; font-size: .875rem; }
+  .check-status span:last-child { color: rgba(255,255,255,.85); }
+  .check-status.busy b::after { content: "…"; }
+  .dot-live { width: .55rem; height: .55rem; border-radius: 50%; background: var(--goal); }
+  .check-status.busy .dot-live { animation: blink .8s ease-in-out infinite; }
+  @keyframes blink { 50% { opacity: .25; } }
+
+  /* 스킬 검토 모션 */
+  .review-demo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr); gap: 1rem; background: #E7EEE9; border-radius: 14px; padding: 1.25rem; min-height: 19rem; }
+  .rv-col h5 { margin: 0 0 .6rem; font-size: .875rem; color: var(--muted); font-weight: 600; }
+  .rv-queue { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; font-size: .8438rem; }
+  .rv-queue li { padding: .4rem .65rem; border-radius: 6px; background: #fff; box-shadow: 0 0 0 1px var(--chalk); transition: opacity .3s ease, transform .3s ease; }
+  .rv-queue li.now { box-shadow: inset 3px 0 0 var(--pitch), 0 0 0 1px var(--chalk); font-weight: 600; }
+  .rv-queue li.done { opacity: .4; }
+  .rv-card { background: #fff; border-radius: 10px; box-shadow: 0 0 0 1px var(--chalk), 0 10px 24px -16px rgba(14,42,31,.5); padding: .9rem 1rem; transition: opacity .3s ease, transform .45s cubic-bezier(.2,.8,.2,1); }
+  .rv-card.out { opacity: 0; transform: translateX(24px); }
+  .rv-card.in0 { opacity: 0; transform: translateX(-24px); }
+  .rv-card b { display: block; font-size: 1.0625rem; letter-spacing: -.01em; }
+  .rv-card small { display: block; font-size: .8125rem; color: var(--muted); margin-bottom: .6rem; }
+  .rv-checks { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; font-size: .875rem; }
+  .rv-checks li { display: grid; grid-template-columns: 1.25rem minmax(0, 1fr); align-items: center; color: var(--muted); transition: color .2s ease; }
+  .rv-checks li::before { content: ""; width: .85rem; height: .85rem; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--chalk); }
+  .rv-checks li.ok { color: var(--ink); }
+  .rv-checks li.ok::before { background: var(--pitch); box-shadow: none; }
+  .rv-checks li.fix.ok::before { background: var(--goal); }
+  .rv-checks em { font-style: normal; font-weight: 600; }
+  .rv-shelf { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem; align-content: flex-start; }
+  .rv-shelf li { font-size: .8125rem; font-weight: 600; padding: .25rem .6rem; border-radius: 999px; background: var(--pitch); color: #fff; animation: pop .35s cubic-bezier(.3,1.5,.5,1); }
+  .rv-shelf li.more { background: var(--ink); }
+  @keyframes pop { from { transform: scale(.6); opacity: 0; } }
+  #rvCount { color: var(--ink); }
+
+  /* 알림 모션 */
+  .alert-demo { position: relative; background: #E7EEE9; border-radius: 14px; padding: 1.25rem; overflow: hidden; min-height: 25rem; }
+  .sheet { background: #fff; border-radius: 10px; box-shadow: 0 0 0 1px var(--chalk); overflow: hidden; max-width: 37rem; }
+  .sheet-bar { display: flex; align-items: center; gap: .6rem; padding: .6rem .9rem; border-bottom: 1px solid var(--chalk); font-size: .8438rem; color: var(--muted); }
+  .sheet-bar i { width: .9rem; height: .9rem; border-radius: 3px; background: #1F7A47; display: inline-block; }
+  .sheet table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+  .sheet th { text-align: left; font-weight: 600; color: var(--muted); font-size: .8125rem; padding: .5rem .9rem; background: #F5F8F5; border-bottom: 1px solid var(--chalk); }
+  .sheet td { padding: .5rem .9rem; border-bottom: 1px solid #EDF2EE; }
+  .sheet tr.row { opacity: 0; transform: translateY(4px); transition: opacity .35s ease, transform .35s ease; }
+  .sheet tr.row.in { opacity: 1; transform: none; }
+  .blk { display: inline-block; font-size: .75rem; font-weight: 600; padding: .05rem .45rem; border-radius: 4px; }
+  .blk.d { background: #DCE6EE; } .blk.m { background: #E9EFD9; } .blk.a { background: #F1E8CF; }
+  .toasts { position: absolute; top: 1.25rem; right: 1.25rem; width: min(22rem, calc(100% - 2.5rem)); display: grid; gap: .6rem; }
+  .toast { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); gap: .75rem; background: var(--ink); color: #fff; border-radius: 12px; padding: .8rem .9rem; box-shadow: 0 12px 28px -12px rgba(14,42,31,.55); opacity: 0; transform: translateX(110%); transition: transform .55s cubic-bezier(.2,.9,.25,1.08), opacity .3s ease; }
+  .toast.in { opacity: 1; transform: none; }
+  .toast .ico { width: 2.25rem; height: 2.25rem; border-radius: 9px; display: grid; place-items: center; background: var(--goal); color: var(--ink); }
+  .toast.slack .ico { background: #fff; }
+  .toast.in .ico svg { animation: ring .9s ease .25s 1; transform-origin: 50% 10%; }
+  .toast b { display: block; font-size: .9063rem; line-height: 1.4; }
+  .toast span { display: block; font-size: .8125rem; color: rgba(255,255,255,.85); line-height: 1.5; margin-top: .15rem; }
+  .toast small { color: rgba(255,255,255,.75); font-size: .75rem; }
+  @keyframes ring { 0%,100% { transform: rotate(0); } 15% { transform: rotate(16deg); } 30% { transform: rotate(-14deg); } 45% { transform: rotate(10deg); } 60% { transform: rotate(-6deg); } 75% { transform: rotate(3deg); } }
+  .demo-note { font-size: .8125rem; color: var(--muted); margin: .6rem 0 0; }
+
+  /* 24시간 띠 */
+  .day { margin: 2rem 0 0; }
+  .day-bar { display: grid; grid-template-columns: 31.25fr 31.25fr 37.5fr; border-radius: 10px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--chalk); }
+  .day-bar div { padding: .7rem .9rem; line-height: 1.4; }
+  .day-bar b { display: block; font-size: 1rem; }
+  .day-bar small { font-size: .8125rem; color: var(--muted); }
+  .day-bar .dawn { background: #DCE6EE; }
+  .day-bar .morning { background: #E9EFD9; }
+  .day-bar .after { background: #F1E8CF; }
+  .ticks { display: grid; grid-template-columns: 31.25fr 31.25fr 37.5fr; font-size: .8125rem; color: var(--muted); margin-top: .4rem; }
+  .ticks span:last-child { display: flex; justify-content: space-between; }
+  .day figcaption { color: var(--muted); margin-top: .75rem; }
+
+  /* 모션 임베드 */
+  .motion-frame { border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 1px var(--chalk); background: #F3F6FA; }
+  .motion-frame iframe { display: block; width: 100%; border: 0; height: 45rem; }
+  .motion-cap { font-size: .9375rem; color: var(--muted); margin: .6rem 0 0; }
+  .pipeline { list-style: none; margin: 2.5rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); counter-reset: step; border-top: 2px solid var(--ink); }
+  .pipeline li { counter-increment: step; padding: .9rem .75rem 0 0; }
+  .pipeline li::before { content: counter(step); display: block; font-weight: 800; font-size: 1.5rem; line-height: 1; margin-bottom: .6rem; color: var(--pitch); }
+  .pipeline li strong { display: block; font-size: 1rem; letter-spacing: -.01em; }
+  .pipeline li span { display: block; font-size: .8438rem; color: var(--muted); line-height: 1.5; margin-top: .25rem; }
+  .pipeline .badge { display: inline-block; font-size: .75rem; font-weight: 600; background: var(--goal); color: var(--ink); padding: .05rem .45rem; border-radius: 4px; margin-left: .3rem; vertical-align: .1em; }
+  .sheet-fig { margin: 2.5rem 0 0; }
+  .sheet-fig a { display: block; border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 1px var(--chalk); }
+  .sheet-fig figcaption { font-size: .9375rem; color: var(--muted); margin-top: .6rem; }
+
+  /* 경력 */
+  .job { padding: 2.5rem 0 1rem; border-top: 2px solid var(--ink); }
+  .job + .job { margin-top: 3rem; }
+  .job-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1.25rem; margin-bottom: 1.5rem; }
+  .job-head h3 { font-size: 1.5rem; letter-spacing: -.02em; font-weight: 800; margin: 0; }
+  .job-head .team { color: var(--text); margin: 0; }
+  .job-head .period { color: var(--muted); margin: 0 0 0 auto; }
+  .duty { display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: 1.5rem; padding: 1.25rem 0; border-top: 1px solid var(--chalk); }
+  .duty h4 { font-size: 1.0625rem; margin: 0; letter-spacing: -.01em; line-height: 1.6; }
+  .duty p { margin: 0; color: var(--text); }
+  .duty .meta { margin-top: .75rem; }
+  .duty .meta li { background: #fff; box-shadow: inset 0 0 0 1px var(--chalk); font-weight: 600; }
+  .todo { background: #FFF4CC; padding: 0 .3em; border-radius: 3px; }
+
+  /* 소개 */
+  .about p { margin: 0 0 1rem; }
+  .tools { display: grid; grid-template-columns: 9rem minmax(0, 1fr); margin: 2.25rem 0 0; border-bottom: 1px solid var(--chalk); }
+  .tools dt, .tools dd { padding: .8rem 0; border-top: 1px solid var(--chalk); margin: 0; }
+  .tools dt { font-weight: 700; font-size: .9375rem; }
+  .tools dd { color: var(--text); font-size: .9375rem; }
+
+  /* 연락 */
+  .contact { padding: 5rem 0 3rem; }
+  .contact h2 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -.035em; line-height: 1.25; font-weight: 800; margin: 0 0 1.5rem; }
+  .contact .links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  footer { border-top: 1px solid var(--chalk); padding-top: 1.5rem; padding-bottom: 2.5rem; font-size: .8438rem; color: var(--muted); }
+
+  @media (max-width: 960px) {
+    .hero { grid-template-columns: 1fr; gap: 2rem; }
+    .hero { padding-top: 3rem; padding-bottom: 4rem; }
+    .pipeline { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 2.25rem; border-top: 0; }
+    .pipeline li { border-top: 2px solid var(--ink); }
+    .duty { grid-template-columns: 10rem minmax(0, 1fr); }
+    .motion-frame iframe { height: 40rem; }
+  }
+  @media (max-width: 680px) {
+    body { font-size: 1rem; }
+    .wrap { padding-left: 1rem; padding-right: 1rem; }
+    .masthead::after { background: rgba(9,28,20,.86); }
+    .top nav { gap: .4rem; width: 100%; }
+    .top nav a { padding: .35rem .85rem; font-size: .875rem; }
+    .story > div, .duty { grid-template-columns: 1fr; gap: .35rem; }
+    .tools { grid-template-columns: 1fr; }
+    .tools dd { border-top: 0; padding-top: 0; }
+    .numbers { grid-template-columns: 1fr; }
+    .numbers div, .numbers div + div { padding: 1rem 0; border-left: 0; border-bottom: 1px solid var(--chalk); }
+    .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .log { grid-template-columns: 1fr; }
+    .log li { display: flex; gap: .75rem; align-items: baseline; }
+    .log li b { min-width: 2.5rem; }
+    .day-bar div { padding: .6rem .5rem; }
+    .day-bar small { display: none; }
+    .checker { grid-template-columns: 1fr; padding: 1rem; }
+    .review-demo { grid-template-columns: 1fr; padding: 1rem; min-height: 0; }
+    .rv-src { display: none; }
+    .alert-demo { padding: 1rem; min-height: 0; }
+    .toasts { position: static; width: auto; margin-top: .75rem; }
+    .job-head .period { margin-left: 0; width: 100%; }
+    .motion-frame iframe { height: 23rem; }
+    .replay3d iframe { height: 44rem; }
+    .play3d { padding: .6rem 1rem .6rem .6rem; gap: .6rem; }
+    .play3d small { display: none; }
+    .play3d-icon { width: 2.4rem; height: 2.4rem; }
+    section.block { padding: 3.5rem 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .log li, .toast, .sheet tr.row { transition: none; }
+    .toast.in .ico svg { animation: none; }
+    .checker li, .checker li .flag, .rv-card, .rv-queue li { transition: none; }
+    .rv-shelf li, .check-status.busy .dot-live { animation: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#work">본문으로 건너뛰기</a>
+
+<header class="masthead">
+<div class="wrap top">
+  <a class="name" href="#">
+    <svg class="avatar" viewBox="0 0 40 40" aria-hidden="true">
+      <defs><clipPath id="avClip"><circle cx="20" cy="20" r="20"/></clipPath></defs>
+      <g clip-path="url(#avClip)">
+        <circle cx="20" cy="20" r="20" fill="#E8B21E"/>
+        <circle cx="20" cy="15.5" r="6.6" fill="#0E2A1F"/>
+        <path d="M6.5 40c.6-8.4 6.3-14 13.5-14s12.9 5.6 13.5 14z" fill="#0E2A1F"/>
+      </g>
+      <g transform="translate(31.2 31.2)">
+        <circle r="7.2" fill="#fff" stroke="#0E2A1F" stroke-width="1.3"/>
+        <path d="M0-2.9 2.75-.9 1.7 2.35h-3.4L-2.75-.9z" fill="#0E2A1F"/>
+        <path d="M0-2.9V-6.9M2.75-.9 6.6-2.1M1.7 2.35 4.1 5.6M-1.7 2.35-4.1 5.6M-2.75-.9-6.6-2.1" stroke="#0E2A1F" stroke-width=".9"/>
+      </g>
+    </svg>
+    <span>김동환</span>
+  </a>
+  <nav aria-label="주요 메뉴">
+    <a href="#work">작업</a>
+    <a href="#career">경력</a>
+    <a href="#about">소개</a>
+    <a href="#contact">연락</a>
+  </nav>
+</div>
+
+  <section class="wrap hero" aria-labelledby="hero-title">
+    <div>
+      <h1 id="hero-title"><span class="nw">현장을 기획·운영하고,</span> <span class="nw">반복 업무는</span> <span class="nw">AI로 자동화합니다.</span></h1>
+      <p>스포츠투아이 DX사업파트에서 K리그 기록원 73명의 운영과 정산, 기록 데이터 검수, 제안·계약을 맡고 있는 김동환입니다. 불편한 업무는 먼저 찾아내 AI와 스크립트로 직접 도구를 만듭니다.</p>
+      <ul class="proof" aria-label="성과 요약">
+        <li>기록원 73명 운영</li>
+        <li>오류 연락 3회 → 0건</li>
+        <li>DB 조회 대신 1분 이내 Slack 알림</li>
+      </ul>
+      <div class="links">
+        <a class="btn" href="#work">작업 보기</a>
+        <a class="btn ghost" href="#career">경력 보기</a>
+      </div>
+    </div>
+
+    <figure class="play" aria-labelledby="play-cap">
+      <div class="play-head">
+        <strong>한빛 2–1 서해</strong>
+        <span>2026 가상 리그 18라운드 · 후반 36:10</span>
+      </div>
+      <svg class="pitch" viewBox="0 0 105 68" role="img" aria-label="가상 데이터로 그린 골 장면. 최도윤의 패스가 측면의 노지호에게 가고, 노지호가 측면을 따라 공을 몰고 간 뒤 크로스를 올리고, 정태윤이 골문 앞에서 슛해 득점합니다.">
+        <g aria-hidden="true">
+          <rect class="stripe" x="0" y="0" width="10.5" height="68"/><rect class="stripe" x="21" y="0" width="10.5" height="68"/>
+          <rect class="stripe" x="42" y="0" width="10.5" height="68"/><rect class="stripe" x="63" y="0" width="10.5" height="68"/>
+          <rect class="stripe" x="84" y="0" width="10.5" height="68"/>
+          <rect class="ln" x="1" y="1" width="103" height="66"/>
+          <line class="ln" x1="52.5" y1="1" x2="52.5" y2="67"/>
+          <circle class="ln" cx="52.5" cy="34" r="9.15"/>
+          <rect class="ln" x="1" y="13.84" width="16.5" height="40.32"/>
+          <rect class="ln" x="87.5" y="13.84" width="16.5" height="40.32"/>
+          <rect class="ln" x="1" y="24.84" width="5.5" height="18.32"/>
+          <rect class="ln" x="98.5" y="24.84" width="5.5" height="18.32"/>
+          <path class="ln" d="M87.5 26.7 A9.15 9.15 0 0 0 87.5 41.3"/>
+          <path class="ln" d="M17.5 26.7 A9.15 9.15 0 0 1 17.5 41.3"/>
+          <rect class="ln" x="104" y="30.34" width="1" height="7.32"/>
+        </g>
+        <!-- 가상 데이터 좌표(0~100)를 105×68로 환산. 가상 리그 한빛 2–1 서해, 공격 방향 오른쪽 -->
+        <path id="seg-pass"  class="pass"  d="M47.9 29.9 L80.9 7.8"/>
+        <path id="seg-carry" class="carry" d="M80.9 7.8 L97.9 9.7"/>
+        <path id="seg-cross" class="pass"  d="M97.9 9.7 Q101.5 24 92.1 37.9"/>
+        <path id="seg-shot"  class="shot"  d="M92.1 37.9 L104.6 33.4"/>
+        <g id="p1"><circle class="dot" cx="47.9" cy="29.9" r="1.9"/><text class="num" x="47.9" y="30.0">24</text><text class="tag" x="41.5" y="34.9">최도윤</text></g>
+        <g id="p2"><circle class="dot" cx="97.9" cy="9.7" r="1.9"/><text class="num" x="97.9" y="9.8">35</text><text class="tag" x="86" y="15.6">노지호</text></g>
+        <g id="p3"><circle class="dot scorer" cx="92.1" cy="37.9" r="1.9"/><text class="num" x="92.1" y="38.0">31</text><text class="tag" x="82.6" y="44.2">정태윤</text></g>
+      </svg>
+      <ol class="log" id="log">
+        <li data-step="1"><b>0초</b>최도윤 패스</li>
+        <li data-step="2"><b>5초</b>노지호 크로스</li>
+        <li data-step="3" class="g"><b>6초</b>정태윤 골 · xG 0.12</li>
+      </ol>
+      <div class="play-foot">
+        <span id="play-cap">가상 데이터로 그린 예시입니다. 점선은 공을 몰고 간 구간.</span>
+        <button class="replay" type="button" id="replay">다시 보기</button>
+      </div>
+    </figure>
+  </section>
+</header>
+
+<main>
+
+  <section class="block" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <h2 class="sec-title" id="work-title">작업</h2>
+      <p class="sec-lead">현장에서 쓰는 검수 도구와 자동화, 그리고 경기 데이터를 화면과 영상으로 옮긴 작업들입니다.</p>
+
+      <!-- 1. K리그 데이터 랩 -->
+      <article class="project" aria-labelledby="p1-title">
+        <div class="p-head">
+          <h3 id="p1-title">K리그 데이터 랩</h3>
+          <ul class="meta" aria-label="사용 기술">
+            <li>Python</li><li>pandas</li><li>scikit-learn</li><li>PostgreSQL</li><li>Three.js</li><li>SVG·HTML</li>
+          </ul>
+          <p class="summary">K리그 경기 이벤트 기록으로 3D 골 리플레이, 매치 스토리, 모델 노트, 전술 모션을 만들고 추출부터 화면까지 혼자 맡았습니다.</p>
+          <p class="demo-flag">공개용 페이지라서 아래 화면은 실제 데이터 대신, 같은 형식으로 생성한 가상 리그 데이터로 다시 만들었습니다. 팀·선수·기록은 모두 가상입니다.</p>
+        </div>
+
+        <div class="gallery">
+          <figure class="big">
+            <div class="replay3d" id="replay3d">
+              <img src="assets/shots/goal3d_demo.jpg" alt="가상 리그 3D 골 리플레이 첫 화면. 한빛과 서해의 경기에서 골로 이어진 패스 연결이 경기장 위에 그려져 있다." width="1440" height="900">
+              <button type="button" class="play3d" id="play3d" aria-label="3D 골 리플레이를 이 자리에서 재생">
+                <span class="play3d-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
+                <span><b>3D 리플레이 재생</b><small>가상 리그 18라운드 한빛 2–1 서해, 윤다온의 선제골부터 시작합니다</small></span>
+              </button>
+            </div>
+            <figcaption>3D 골 리플레이. 실제 프로젝트에서는 시즌의 모든 골을 골 직전 연결부터 경기장 위에 다시 세웠고, 여기서는 가상 리그 6경기 17골로 같은 화면을 보여 줍니다.</figcaption>
+          </figure>
+          <figure>
+            <a href="assets/shots/replay_shots.jpg"><img src="assets/shots/replay_shots.jpg" alt="가상 경기 슛 지도. 슛 위치가 xG 크기의 원으로 표시되고 아래에 누적 xG 흐름이 있다." width="1440" height="810" loading="lazy"></a>
+            <figcaption>슛 지도와 누적 xG. 원 크기가 슛의 득점 기대값입니다.</figcaption>
+          </figure>
+          <figure>
+            <a href="assets/shots/replay_heat.jpg"><img src="assets/shots/replay_heat.jpg" alt="가상 경기 홈팀 터치 히트맵" width="1440" height="810" loading="lazy"></a>
+            <figcaption>터치 히트맵. 한 팀이 주로 공을 만진 지역을 보여 줍니다.</figcaption>
+          </figure>
+          <figure>
+            <a href="assets/shots/tactics_demo.jpg"><img src="assets/shots/tactics_demo.jpg" alt="가상 경기 전반과 후반의 평균 위치와 패스 연결 비교" width="1440" height="810" loading="lazy"></a>
+            <figcaption>전술 변화 비교. 전반과 후반의 평균 위치와 패스 연결을 비교합니다.</figcaption>
+          </figure>
+          <figure>
+            <a href="assets/shots/replay_final.jpg"><img src="assets/shots/replay_final.jpg" alt="가상 경기 최종 기록 카드. 점유율, 슛, 유효슛, xG, 패스를 두 팀이 나란히 비교한다." width="1440" height="810" loading="lazy"></a>
+            <figcaption>최종 기록 카드. 헤드라인도 데이터에서 규칙으로 뽑습니다.</figcaption>
+          </figure>
+        </div>
+
+        <div class="story">
+          <div>
+            <h4>문제</h4>
+            <p>이벤트 기록은 사람이 그대로 읽기 어려운 긴 표입니다. 전·후반마다 공격 방향이 바뀌고 기록 방식의 차이도 있어, 그대로 그리면 장면이 틀어집니다.</p>
+          </div>
+          <div>
+            <h4>한 일</h4>
+            <ul>
+              <li>읽기 전용 연결로 DB에서 추출하고, 공격 방향을 경기별로 맞추는 보정표를 만들었습니다.</li>
+              <li>득점 확률이 평소 수준 아래로 떨어지는 지점까지 거슬러 올라가 골 장면의 시작을 정했습니다.</li>
+              <li>xG, 행동가치, MoM, 승률 모델을 1~120번 경기로 학습하고 121~150번 경기로 채점했습니다.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>배운 점</h4>
+            <p>우리 모델이 기준선보다 못한 결과도 그대로 적었습니다. 그래서 경기 리뷰에는 공식 xG를 쓰고, 우리 xG는 위치 가치 지도 학습에만 씁니다.</p>
+          </div>
+        </div>
+
+        <div class="numbers">
+          <div><strong>모델 4종</strong><span>xG, 행동가치, MoM, 경기 중 승률</span></div>
+          <div><strong>120 / 30경기</strong><span>학습 경기와 채점 경기를 나눠 처음 보는 경기로만 성적을 냄</span></div>
+          <div><strong>시점 4개</strong><span>3D 리플레이의 방송·따라가기·위에서·골대 뒤</span></div>
+        </div>
+      </article>
+
+      <!-- 2. 선발 명단·포메이션 검증 도구 -->
+      <article class="project" aria-labelledby="p2-title">
+        <div class="p-head">
+          <h3 id="p2-title">K리그 선발 명단·포메이션 검증 도구</h3>
+          <ul class="meta" aria-label="분야">
+            <li>데이터 검수</li><li>업무 도구 구축</li><li>K리그 기록 운영</li>
+          </ul>
+          <p class="summary">경기마다 입력하는 선발 명단과 포메이션을 공식 자료와 맞대어, 중복과 누락을 찾고 차이를 한 화면에서 비교하도록 만들었습니다.</p>
+        </div>
+
+        <figure style="margin:0">
+          <div class="checker" id="checker" role="img" aria-label="검증 도구 화면 구성 예시. 입력한 선발 명단과 공식 자료를 한 줄씩 맞대어 보며, 등번호 중복, 번호 차이, 명단 외 선수와 빠진 선수를 노란색으로 표시하고 확인이 필요한 줄 2개를 알려 준다.">
+            <div>
+              <h5>입력한 선발 <span>4-4-2</span></h5>
+              <ol>
+                <li><span class="pos">GK</span><span class="no">1</span><span>선수 A</span><span class="flag">일치</span></li>
+                <li><span class="pos">DF</span><span class="no">4</span><span>선수 B</span><span class="flag">일치</span></li>
+                <li class="bad" data-bad><span class="pos">DF</span><span class="no">4</span><span>선수 C</span><span class="flag">중복</span></li>
+                <li><span class="pos">MF</span><span class="no">8</span><span>선수 D</span><span class="flag">일치</span></li>
+                <li class="bad" data-bad><span class="pos">FW</span><span class="no">9</span><span>선수 E</span><span class="flag">명단 외</span></li>
+              </ol>
+            </div>
+            <div>
+              <h5>공식 자료 <span>4-4-2</span></h5>
+              <ol>
+                <li><span class="pos">GK</span><span class="no">1</span><span>선수 A</span><span class="flag">일치</span></li>
+                <li><span class="pos">DF</span><span class="no">4</span><span>선수 B</span><span class="flag">일치</span></li>
+                <li class="bad" data-bad><span class="pos">DF</span><span class="no">5</span><span>선수 C</span><span class="flag">차이</span></li>
+                <li><span class="pos">MF</span><span class="no">8</span><span>선수 D</span><span class="flag">일치</span></li>
+                <li class="bad" data-bad><span class="pos">MF</span><span class="no">17</span><span>선수 F</span><span class="flag">누락</span></li>
+              </ol>
+            </div>
+            <div class="check-status" id="checkStatus"><span class="dot-live" aria-hidden="true"></span><b>검증 완료</b><span>확인이 필요한 줄 2개: 등번호 중복과 번호 차이, 명단 외 선수와 누락</span></div>
+            <p class="checker-note">화면 구성을 설명하기 위한 예시입니다. 선수 이름과 번호는 실제 데이터가 아닙니다.</p>
+          </div>
+        </figure>
+
+        <div class="story">
+          <div>
+            <h4>문제</h4>
+            <p>선발 명단과 포메이션은 손으로 입력하기 때문에 번호 중복이나 선수 누락이 생기고, 그 오류는 데이터를 받는 업체의 연락으로 뒤늦게 드러났습니다.</p>
+          </div>
+          <div>
+            <h4>한 일</h4>
+            <p>입력과 검증을 한 도구로 묶어 중복·누락을 자동으로 확인하고, 입력값과 공식 자료의 차이를 화면에서 바로 비교하도록 했습니다.</p>
+          </div>
+          <div>
+            <h4>결과</h4>
+            <p>개발 전 라운드당 평균 3회였던 업체의 오류 관련 연락이 개발 후 전반기 15라운드 동안 0건이었고, 다른 권역에서도 이 도구를 쓰게 됐습니다.</p>
+          </div>
+        </div>
+
+        <div class="numbers">
+          <div><strong>3회 → 0건</strong><span>라운드당 업체 오류 연락, 개발 전 평균 대 개발 후</span></div>
+          <div><strong>15라운드</strong><span>오류 연락 0건을 이어 간 전반기 기간</span></div>
+          <div><strong>권역 확대</strong><span>처음 만든 권역 밖으로 활용 범위가 넓어짐</span></div>
+        </div>
+      </article>
+
+      <!-- 3. 업무 자동화 -->
+      <article class="project" aria-labelledby="p3-title">
+        <div class="p-head">
+          <h3 id="p3-title">업무 자동화: 모니터링 스케줄과 Slack 정기 알림</h3>
+          <ul class="meta" aria-label="사용 기술">
+            <li>Python</li><li>MSSQL</li><li>MariaDB</li><li>openpyxl</li><li>Slack</li>
+          </ul>
+          <p class="summary">해외 리그 일정을 모아 1주일치 근무 스케줄 엑셀을 만드는 스크립트와, DB를 직접 조회해야 알 수 있던 정보를 팀 Slack으로 보내 주는 정기 알림을 만들었습니다.</p>
+        </div>
+
+        <figure style="margin:0" aria-labelledby="alert-cap">
+          <div class="alert-demo" id="alertDemo">
+            <div class="sheet" aria-hidden="true">
+              <div class="sheet-bar"><i></i>주간_모니터링_스케줄.xlsx</div>
+              <table>
+                <thead><tr><th>날짜</th><th>시간</th><th>블록</th><th>대상 종목</th></tr></thead>
+                <tbody>
+                  <tr class="row"><td>토</td><td>00:00</td><td><span class="blk d">새벽</span></td><td>EURO, MLS</td></tr>
+                  <tr class="row"><td></td><td>08:00</td><td><span class="blk m">오전</span></td><td>MLB, NPB</td></tr>
+                  <tr class="row"><td></td><td>15:05</td><td><span class="blk a">오후</span></td><td>J리그</td></tr>
+                  <tr class="row"><td>일</td><td>02:05</td><td><span class="blk d">새벽</span></td><td>MLB</td></tr>
+                  <tr class="row"><td></td><td>08:00</td><td><span class="blk m">오전</span></td><td>NPB, NBA</td></tr>
+                  <tr class="row"><td></td><td>16:00</td><td><span class="blk a">오후</span></td><td>ACL, J리그</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="toasts" aria-live="off">
+              <div class="toast" id="toast1">
+                <span class="ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+                <div><b>주간 모니터링 스케줄이 만들어졌습니다</b><span>토요일부터 금요일까지, 새벽·오전·오후 블록으로 나눈 엑셀을 열었습니다.</span><small>방금</small></div>
+              </div>
+              <div class="toast slack" id="toast2">
+                <span class="ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="10" width="8" height="3.2" rx="1.6" fill="#36C5F0"/><rect x="10.8" y="3" width="3.2" height="8" rx="1.6" fill="#2EB67D"/><rect x="13" y="10.8" width="8" height="3.2" rx="1.6" fill="#ECB22E"/><rect x="10" y="13" width="3.2" height="8" rx="1.6" fill="#E01E5A"/></svg></span>
+                <div><b>DX사업파트 정기 알림</b><span>DB를 직접 조회하던 정보가 채널로 도착했습니다. 팀원 5명이 같은 내용을 바로 확인합니다.</span><small>정기 발송</small></div>
+              </div>
+            </div>
+          </div>
+          <p class="demo-note" id="alert-cap">작동 방식을 보여 주는 예시 화면입니다. 표의 일정과 알림 문구는 실제 데이터가 아닙니다.</p>
+        </figure>
+
+        <figure class="day" aria-labelledby="day-cap">
+          <div class="day-bar">
+            <div class="dawn"><b>새벽</b><small>전날 23시 이후 경기가 있으면 0시부터</small></div>
+            <div class="morning"><b>오전</b><small>07:30 이후 첫 경기 기준, 보통 08:00</small></div>
+            <div class="after"><b>오후</b><small>15시 이후 실제 첫 경기 시각</small></div>
+          </div>
+          <div class="ticks" aria-hidden="true"><span>00:00</span><span>07:30</span><span><span>15:00</span><span>24:00</span></span></div>
+          <figcaption id="day-cap">하루를 세 블록으로 나누고, 경기가 없는 블록은 행을 만들지 않으며, 같은 날짜의 행은 셀을 병합합니다.</figcaption>
+        </figure>
+
+        <div class="story">
+          <div>
+            <h4>스케줄</h4>
+            <p>MLB, NPB, NBA, AFC 챔피언스리그, J리그, 유럽 7개 리그, MLS 일정을 사내 DB 두 곳에서 모아 근무 블록과 담당을 채운 엑셀을 만듭니다. 팀원은 실행 파일을 더블클릭만 하면 됩니다.</p>
+          </div>
+          <div>
+            <h4>규칙 다듬기</h4>
+            <p>이른 오전 경기를 새벽에 붙일지는 직전 새벽 경기와 5시간 이상 떨어졌는지로 정합니다. 실제 결과를 보며 열일곱 차례 넘게 고쳤고, 바꾼 규칙은 합성 데이터 테스트로 검증한 뒤 반영합니다.</p>
+          </div>
+          <div>
+            <h4>Slack 알림</h4>
+            <p>DX사업파트 5명을 위한 정기 알림을 기획했습니다. AI의 도움을 받아 필요한 컬럼과 XML 노드를 정확히 지정하고 반복 테스트로 출력 내용을 보완해, DB를 직접 조회하던 정보를 빠르면 1분 이내에 확인하도록 바꿨습니다.</p>
+          </div>
+          <div>
+            <h4>보안</h4>
+            <p>접속 정보는 로컬 설정 파일에만 두고, 팀 배포용 패키지는 민감 정보를 뺀 채로 따로 묶었습니다.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4. 모션그래픽 스킬 v2 -->
+      <article class="project" aria-labelledby="p4-title">
+        <div class="p-head">
+          <h3 id="p4-title">모션그래픽 스킬 v2</h3>
+          <ul class="meta" aria-label="사용 기술">
+            <li>Claude Code 스킬</li><li>HTML 애니메이션</li><li>Playwright</li><li>ffmpeg</li>
+          </ul>
+          <p class="summary">코드로 데이터 영상을 만드는 과정을 7단계로 나누고 단계마다 검사 도구를 붙였습니다. 아래 영상은 같은 템플릿에 가상 데이터를 넣어 만든 데모입니다.</p>
+        </div>
+
+        <figure style="margin:0">
+          <div class="motion-frame">
+            <iframe src="assets/motion/replay60.html?embed" title="60초 데이터 리플레이: 가상 리그 은하 2–2 단풍" loading="lazy"></iframe>
+          </div>
+          <figcaption class="motion-cap">60초 데이터 리플레이, 가상 리그 은하 2–2 단풍. 선발 포메이션, 슛과 xG 흐름, 연속골, 점유 구역, 최종 기록을 7개 장면으로 이었습니다.</figcaption>
+        </figure>
+
+        <ol class="pipeline" aria-label="영상 제작 7단계">
+          <li><strong>브리프</strong><span>메시지, 보는 사람, 크기와 길이, 쓸 데이터</span></li>
+          <li><strong>스토리</strong><span>도입·전개·절정·마무리 장면 배치</span></li>
+          <li><strong>샷 플랜</strong><span>설계와 빌드 사이의 유일한 계약</span></li>
+          <li><strong>빌드</strong><span>시각만으로 화면이 정해지는 결정적 시계</span></li>
+          <li><strong>검수 <span class="badge">자동</span></strong><span>이음새·정지·잘림·콘솔 오류 측정</span></li>
+          <li><strong>내보내기</strong><span>MP4·WebM·GIF·PNG 한 번에</span></li>
+          <li><strong>수정</strong><span>한 번에 하나씩, 느낌을 원인으로 번역</span></li>
+        </ol>
+
+        <figure class="sheet-fig">
+          <a href="assets/shots/contact_demo.jpg"><img src="assets/shots/contact_demo.jpg" alt="위 영상의 0초부터 58초까지 9개 시점을 격자로 모은 컨택트 시트" width="1920" height="912" loading="lazy"></a>
+          <figcaption>위 영상의 9개 시점을 모은 컨택트 시트입니다. 검수 단계는 이런 시트와 함께 이음새, 멈춘 화면, 잘림, 콘솔 오류를 먼저 측정합니다.</figcaption>
+        </figure>
+
+        <div class="story">
+          <div>
+            <h4>문제</h4>
+            <p>형식별 레시피만 있어서 결과가 들쭉날쭉했고, 화면에 들어간 숫자가 사실과 맞는지는 사람이 눈으로 확인해야 했습니다.</p>
+          </div>
+          <div>
+            <h4>한 일</h4>
+            <p>사실 목록과 샷 플랜의 숫자가 맞는지 코드로 검사하고, 경기 장면·데이터 스토리 등 샷 유형 11종과 K리그 하우스 스타일을 정리했습니다.</p>
+          </div>
+          <div>
+            <h4>결과</h4>
+            <p>눈 검수 전에 자동 검수가 먼저 돌고, 스크립트 하나로 영상 포맷을 모두 뽑으며, 중단된 작업은 이어갈 단계를 표로 찾습니다.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- 5. AI 디자인 스킬 큐레이션 -->
+      <article class="project" aria-labelledby="p5-title">
+        <div class="p-head">
+          <h3 id="p5-title">AI 디자인 스킬 큐레이션</h3>
+          <ul class="meta" aria-label="사용 기술">
+            <li>Claude Code</li><li>Agent Skills</li><li>오픈소스 검토</li>
+          </ul>
+          <p class="summary">디자인·발표자료·프런트엔드 관련 오픈소스 스킬을 검토해 나만의 디자인 작업 환경으로 묶었습니다. 지금 보고 계신 이 사이트가 그 환경으로 만든 첫 결과물입니다.</p>
+        </div>
+
+        <figure style="margin:0 0 2.5rem">
+          <div class="review-demo" id="reviewDemo" role="img" aria-label="스킬 검토 과정. 저장소에서 가져온 스킬마다 문서, 라이선스, 네트워크 호출을 확인하고 필요한 조치를 한 뒤 내 스킬 목록에 추가한다.">
+            <div class="rv-col rv-src">
+              <h5>저장소</h5>
+              <ol class="rv-queue" id="rvQueue"></ol>
+            </div>
+            <div class="rv-col">
+              <h5>검토</h5>
+              <div class="rv-card" id="rvCard">
+                <b id="rvName"></b><small id="rvRepo"></small>
+                <ul class="rv-checks" id="rvChecks">
+                  <li>문서를 끝까지 읽기</li>
+                  <li><span>라이선스 <em id="rvLic"></em></span></li>
+                  <li>스크립트의 네트워크 호출 확인</li>
+                  <li class="fix"><span><em id="rvFix"></em></span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="rv-col">
+              <h5>내 스킬 <span id="rvCount"></span></h5>
+              <ul class="rv-shelf" id="rvShelf"></ul>
+            </div>
+          </div>
+          <figcaption class="demo-note">실제로 검토한 스킬과 조치 내용입니다. 27개 중 6개를 차례로 보여 줍니다.</figcaption>
+        </figure>
+
+        <div class="numbers" style="margin-top:0">
+          <div><strong>15곳</strong><span>직접 받아 검토한 저장소(스킬 목록 포함)</span></div>
+          <div><strong>27개</strong><span>문서·라이선스·스크립트를 확인하고 설치한 스킬</span></div>
+          <div><strong>2개</strong><span>직접 만든 허브와 스킬 카탈로그</span></div>
+        </div>
+
+        <div class="story">
+          <div>
+            <h4>기준</h4>
+            <p>설치 전에 문서를 끝까지 읽고 라이선스와 스크립트의 네트워크 호출을 확인했습니다. 목록에 있다고 안전하다고 보지 않았습니다.</p>
+          </div>
+          <div>
+            <h4>뺀 것</h4>
+            <p>확인 없이 모든 주소의 다운로드를 허용하는 권한, 홍보 워터마크와 자동 업데이트 확인, 세션마다 강제로 실행되는 시작 훅을 뺐습니다.</p>
+          </div>
+          <div>
+            <h4>정리한 것</h4>
+            <p>스킬끼리 규칙이 부딪히는 지점에 우선순위를 정하고, 작업 종류별로 어떤 스킬을 쓸지 고르는 라우팅 표를 만들었습니다.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block" id="career" aria-labelledby="career-title">
+    <div class="wrap">
+      <h2 class="sec-title" id="career-title">경력</h2>
+      <p class="sec-lead">축구협회에서 대회와 선수 등록을 다뤘고, 지금은 스포츠 기록 데이터의 현장 운영부터 사업과 서비스 기획까지 맡고 있습니다.</p>
+
+      <article class="job" aria-labelledby="job1">
+        <div class="job-head">
+          <h3 id="job1">스포츠투아이(주)</h3>
+          <p class="team">스포츠DX실 · DX사업파트</p>
+          <p class="period">2022.04 – 현재</p>
+        </div>
+
+        <div class="duty">
+          <h4>현장 인력 운영과 비용 정산</h4>
+          <div>
+            <p>전국 12개 권역 K리그 공식 기록원 73명의 채용·배치와 경기 일정 조율을 맡고 있습니다. 시즌별 운영 계획을 세우고 돌발 결원에 대비한 대체 인력 투입 체계를 마련했습니다. 연간 약 1억 3,400만 원의 인건비와 출장비를 관리하며 교통비·숙박비·식비의 산출 기준과 지급 조건을 정리했고, 경기별 투입 인력과 비용을 연결한 정산표로 근무 내역과 증빙을 대조했습니다. 집계부터 검증·승인·지급까지 절차를 정비해 정산 문의를 월 1~2건 수준으로 줄였습니다.</p>
+            <ul class="meta"><li>기록원 73명</li><li>12개 권역</li><li>연 1억 3,400만 원 관리</li><li>정산 문의 월 1~2건</li></ul>
+          </div>
+        </div>
+        <div class="duty">
+          <h4>데이터 운영과 업무 개선</h4>
+          <div>
+            <p>K리그·KBO 등 국내외 프로리그의 기록 데이터 운영과 검수를 맡고 있습니다. K리그 선발 명단·포메이션 입력·검증 도구를 만들어 업체의 오류 관련 연락을 라운드당 평균 3회에서 전반기 15라운드 동안 0건으로 줄였고, 다른 권역으로 활용이 넓어졌습니다. DX사업파트 5명을 위한 Slack 정기 알림을 기획해 DB를 직접 조회하던 정보를 빠르면 1분 이내에 확인하도록 했습니다.</p>
+            <ul class="meta"><li>오류 연락 3회 → 0건</li><li>Slack 알림 1분 이내</li></ul>
+          </div>
+        </div>
+        <div class="duty">
+          <h4>제안·견적과 계약</h4>
+          <div>
+            <p>야구 데이터 솔루션 사업에서 구단별 요구를 파악해 제안서를 작성했습니다. 제공 범위와 작업량을 바탕으로 견적을 산정하고, 제공 일정과 책임 범위 등 계약 조건을 조율했습니다. 2025년 11월부터 2026년 3월까지의 프로젝트에서 4개 업체와 계약했습니다.</p>
+            <ul class="meta"><li>4개 업체 계약</li><li>2025.11 – 2026.03</li></ul>
+          </div>
+        </div>
+        <div class="duty">
+          <h4>신규 서비스 기획과 협업</h4>
+          <div>
+            <p>ABL 기록 입력기 개발 과정에서 스토리보드와 기능 요구사항을 작성했습니다. 운영 부서, 개발업체, 플랫폼 담당자 사이에서 개발 범위와 일정을 조율하고 검수에 참여해, 시즌 개막에 맞춰 입력기와 서비스를 출시했습니다.</p>
+            <ul class="meta"><li>시즌 개막 일정에 맞춰 출시</li></ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="job" aria-labelledby="job2">
+        <div class="job-head">
+          <h3 id="job2">인천광역시축구협회</h3>
+          <p class="team">관내 축구 리그·대회 기획 및 운영, 행정 업무</p>
+          <p class="period">2021.02 – 2021.12</p>
+        </div>
+
+        <div class="duty">
+          <h4>선수 등록과 행정 데이터 관리</h4>
+          <div>
+            <p>인천 지역 엘리트·동호인 선수 8,100명 이상의 등록과 이적 관련 데이터를 관리했습니다. 대한축구협회 선수 등록 시스템에서 정보를 입력·검증하고 오류를 정정했으며, 등록 절차를 운영하며 참가자와 팀 관계자의 요청을 처리했습니다.</p>
+            <ul class="meta"><li>선수 8,100명 이상</li></ul>
+          </div>
+        </div>
+        <div class="duty">
+          <h4>대회와 리그 운영</h4>
+          <div>
+            <p>지역 축구 대회와 리그의 경기 일정을 조율하고 심판 배정과 현장 운영을 담당했습니다. 참가팀과 관계 기관 등 여러 이해관계자와 소통하며 운영에 필요한 사항을 조정했고, 코로나19 상황에서는 방역 대응 가이드라인을 작성해 대회 운영 절차에 반영했습니다.</p>
+          </div>
+        </div>
+        <div class="duty">
+          <h4>행사 기획과 대외 협력</h4>
+          <div>
+            <p>협회 주관 행사의 기획부터 준비와 진행까지 담당했습니다. 관계 기관 섭외와 일정 조율, 참가팀과 생활체육 담당자 간 협의회 운영, 지자체 협조 공문 작성 등 대외 행정 업무를 처리했습니다.</p>
+          </div>
+        </div>
+        <div class="duty">
+          <h4>협회 운영 지원</h4>
+          <div>
+            <p>협회장 업무 보좌와 대내외 커뮤니케이션을 지원했습니다. 대회·리그 운영 과정에서 관계자의 요청과 현장 상황을 확인하고 필요한 내용을 공유해 협회 업무가 원활하게 진행되도록 도왔습니다.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block" id="about" aria-labelledby="about-title">
+    <div class="wrap about">
+      <div>
+        <h2 class="sec-title" id="about-title">소개</h2>
+        <p>현장과 데이터 사이에서 일해 왔습니다. 대회 운영과 선수 등록으로 시작해, 지금은 기록원 운영과 정산, 기록 데이터 검수, 제안과 계약, 서비스 기획까지 맡고 있습니다.</p>
+        <p>반복되는 확인은 도구로 만들고, 화면과 문서의 숫자는 원본과 맞는지 먼저 봅니다. 모델 성적도 학습에 쓰지 않은 경기로만 냅니다.</p>
+        <p>그다음에는 그 숫자를 처음 보는 사람이 바로 이해할 수 있는 형태를 고민합니다. 표를 장면으로, 장면을 짧은 모션으로 바꾸는 일을 좋아합니다.</p>
+      </div>
+      <dl class="tools">
+        <dt>운영·정산</dt><dd>현장 인력 배치와 일정 조율, 비용 산출 기준 수립, 정산표와 증빙 대조</dd>
+        <dt>기획·사업</dt><dd>제안서와 견적 작성, 계약 조건 조율, 스토리보드와 기능 요구사항 작성</dd>
+        <dt>분석·모델링</dt><dd>Python, pandas, NumPy, scikit-learn, 부트스트랩·블록 교차검증으로 모델 평가</dd>
+        <dt>데이터</dt><dd>PostgreSQL, MSSQL, MariaDB, 스포츠 이벤트·일정 데이터, 대한축구협회 선수 등록 시스템</dd>
+        <dt>시각화·자동화</dt><dd>HTML·SVG, Three.js, 코드 기반 모션그래픽, 엑셀 리포트, Slack 알림, Claude Code 스킬 설계</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="block contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 id="contact-title">현장은 꼼꼼하게 운영하고, 반복 업무는 AI로 줄여 나갈 사람이 필요하다면 연락 주세요.</h2>
+      <div class="links">
+        <a class="btn" href="mailto:gongrhythm@naver.com">gongrhythm@naver.com</a>
+        <a class="btn ghost" href="https://github.com/dhk03?tab=repositories" target="_blank" rel="noopener">GitHub 저장소 보기</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  이 페이지의 경기 화면·영상 속 팀, 선수, 기록은 모두 가상 데이터입니다. 실제 프로젝트 화면은 면접에서 직접 보여 드릴 수 있습니다. © 김동환
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  /* 히어로: 골 장면 한 번 재생 */
+  var segs = ["seg-pass", "seg-carry", "seg-cross", "seg-shot"].map(function (id) { return document.getElementById(id); });
+  var players = ["p1", "p2", "p3"].map(function (id) { return document.getElementById(id); });
+  var items = Array.prototype.slice.call(document.querySelectorAll("#log li"));
+  var timers = [];
+
+  function showFinal() {
+    timers.forEach(clearTimeout); timers = [];
+    segs.forEach(function (s) { s.style.transition = "none"; s.style.strokeDasharray = ""; s.style.strokeDashoffset = ""; s.style.opacity = ""; });
+    players.forEach(function (p) { p.style.opacity = 1; });
+    items.forEach(function (li) { li.classList.add("on"); });
+  }
+  function draw(i, ms, ease) {
+    segs[i].style.transition = "stroke-dashoffset " + ms + "ms " + (ease || "cubic-bezier(.4,0,.2,1)");
+    segs[i].style.strokeDashoffset = 0;
+  }
+  // 경기 시각(0초 패스, 5초 크로스, 6초 슛)을 약 3초로 압축
+  function play() {
+    if (reduce.matches) { showFinal(); return; }
+    timers.forEach(clearTimeout); timers = [];
+    segs.forEach(function (s) {
+      var carry = s.classList.contains("carry"), L = s.getTotalLength();
+      s.style.transition = "none";
+      if (carry) { s.style.opacity = 0; } else { s.style.strokeDasharray = L + " " + L; s.style.strokeDashoffset = L; }
+    });
+    players.forEach(function (p, i) { p.style.transition = "opacity .25s ease"; p.style.opacity = i === 0 ? 1 : 0; });
+    items.forEach(function (li) { li.classList.remove("on"); });
+    void segs[0].getBoundingClientRect();
+    [[150,  function () { items[0].classList.add("on"); draw(0, 600); }],
+     [750,  function () { players[1].style.opacity = 1; segs[1].style.transition = "opacity .9s ease"; segs[1].style.opacity = 1; }],
+     [1900, function () { items[1].classList.add("on"); draw(2, 550); }],
+     [2450, function () { players[2].style.opacity = 1; }],
+     [2650, function () { items[2].classList.add("on"); draw(3, 350, "cubic-bezier(.2,.7,.2,1)"); }]
+    ].forEach(function (s) { timers.push(setTimeout(s[1], s[0])); });
+  }
+  document.getElementById("replay").addEventListener("click", play);
+
+  /* 자동화: 표가 채워지고 알림이 도착하는 9초 루프, 화면에 보일 때만 */
+  var demo = document.getElementById("alertDemo");
+  var rows = Array.prototype.slice.call(demo.querySelectorAll("tr.row"));
+  var t1 = document.getElementById("toast1"), t2 = document.getElementById("toast2");
+  var loopTimers = [], looping = false;
+  function demoFinal() { rows.forEach(function (r) { r.classList.add("in"); }); t1.classList.add("in"); t2.classList.add("in"); }
+  function demoReset() { rows.forEach(function (r) { r.classList.remove("in"); }); t1.classList.remove("in"); t2.classList.remove("in"); }
+  function cycle() {
+    demoReset();
+    rows.forEach(function (r, i) { loopTimers.push(setTimeout(function () { r.classList.add("in"); }, 500 + i * 330)); });
+    loopTimers.push(setTimeout(function () { t1.classList.add("in"); }, 2900));
+    loopTimers.push(setTimeout(function () { t2.classList.add("in"); }, 4400));
+    loopTimers.push(setTimeout(cycle, 9000));
+  }
+  function startLoop() { if (looping) return; looping = true; if (reduce.matches) { demoFinal(); return; } cycle(); }
+  function stopLoop() { looping = false; loopTimers.forEach(clearTimeout); loopTimers = []; demoFinal(); }
+
+  /* 화면에 보일 때만 반복하는 공용 장치 */
+  function whenVisible(el, start, stop) {
+    if (!("IntersectionObserver" in window)) return;
+    new IntersectionObserver(function (e) { if (e[0].isIntersecting) start(); else stop(); }, { threshold: .35 }).observe(el);
+  }
+
+  /* 검증 도구: 한 줄씩 맞대어 보며 문제를 표시하는 8초 루프 */
+  var ck = document.getElementById("checker");
+  var colL = Array.prototype.slice.call(ck.querySelectorAll("ol")[0].children);
+  var colR = Array.prototype.slice.call(ck.querySelectorAll("ol")[1].children);
+  var st = document.getElementById("checkStatus"), stB = st.querySelector("b"), stS = st.querySelector("span:last-child");
+  var DONE = stS.textContent, ckT = [], ckOn = false;
+  function ckFinal() {
+    colL.concat(colR).forEach(function (li) { li.classList.remove("scan"); li.classList.add(li.hasAttribute("data-bad") ? "bad" : "okay"); });
+    st.classList.remove("busy"); stB.textContent = "검증 완료"; stS.textContent = DONE;
+  }
+  function ckCycle() {
+    colL.concat(colR).forEach(function (li) { li.classList.remove("bad", "okay", "scan"); });
+    st.classList.add("busy"); stB.textContent = "검증 중"; stS.textContent = "입력값과 공식 자료를 한 줄씩 맞대어 보고 있습니다";
+    colL.forEach(function (_, i) {
+      ckT.push(setTimeout(function () {
+        [colL, colR].forEach(function (col) {
+          if (i > 0) col[i - 1].classList.remove("scan");
+          col[i].classList.add("scan", col[i].hasAttribute("data-bad") ? "bad" : "okay");
+        });
+      }, 500 + i * 600));
+    });
+    ckT.push(setTimeout(function () {
+      [colL, colR].forEach(function (col) { col[col.length - 1].classList.remove("scan"); });
+      st.classList.remove("busy"); stB.textContent = "검증 완료"; stS.textContent = DONE;
+    }, 500 + colL.length * 600 + 200));
+    ckT.push(setTimeout(ckCycle, 8000));
+  }
+  ckFinal();
+  whenVisible(ck, function () { if (ckOn) return; ckOn = true; if (!reduce.matches) ckCycle(); },
+                  function () { ckOn = false; ckT.forEach(clearTimeout); ckT = []; ckFinal(); });
+
+  /* 스킬 큐레이션: 실제로 검토한 스킬 6개가 검토를 거쳐 내 스킬에 쌓이는 루프 */
+  var SK = [
+    { n: "frontend-design", r: "anthropics/skills", lic: "Apache-2.0", fix: "한국어 호출 문구 추가" },
+    { n: "huashu-design", r: "alchaincyf/huashu-design", lic: "MIT", fix: "홍보 워터마크·자동 업데이트 확인 제거" },
+    { n: "naming", r: "glacierphonk/naming", lic: "MIT", fix: "curl 사전 허용 권한 제거" },
+    { n: "brainstorming", r: "obra/superpowers", lic: "MIT", fix: "세션 시작 훅 제외, 강제 문구 완화" },
+    { n: "design-auditor", r: "Ashutos1997/claude-design-auditor-skill", lic: "MIT(README 표기)", fix: "한국어 설명 정리" },
+    { n: "dashmotion", r: "csthink/dashmotion", lic: "MIT", fix: "정적 그림 스킬과 쓰임 구분" }
+  ];
+  var TOTAL = 27;
+  var rq = document.getElementById("rvQueue"), rc = document.getElementById("rvCard"), rs = document.getElementById("rvShelf");
+  var rName = document.getElementById("rvName"), rRepo = document.getElementById("rvRepo"), rLic = document.getElementById("rvLic"), rFix = document.getElementById("rvFix");
+  var rChecks = Array.prototype.slice.call(document.querySelectorAll("#rvChecks li")), rCount = document.getElementById("rvCount");
+  SK.forEach(function (s) { var li = document.createElement("li"); li.textContent = s.n; rq.appendChild(li); });
+  var qItems = Array.prototype.slice.call(rq.children), rvT = [], rvOn = false;
+  function setCard(s) { rName.textContent = s.n; rRepo.textContent = s.r; rLic.textContent = s.lic; rFix.textContent = s.fix; }
+  function chip(text, more) { var li = document.createElement("li"); li.textContent = text; if (more) li.className = "more"; rs.appendChild(li); }
+  function rvFinal() {
+    rs.innerHTML = ""; SK.forEach(function (s) { chip(s.n); }); chip("+" + (TOTAL - SK.length) + "개", true);
+    qItems.forEach(function (q) { q.className = "done"; });
+    setCard(SK[SK.length - 1]); rc.className = "rv-card"; rChecks.forEach(function (c) { c.classList.add("ok"); });
+    rCount.textContent = TOTAL + "개";
+  }
+  function rvCycle() {
+    rs.innerHTML = ""; rCount.textContent = "0개"; qItems.forEach(function (q) { q.className = ""; });
+    var STEP = 2500;
+    SK.forEach(function (s, i) {
+      var t0 = 300 + i * STEP;
+      rvT.push(setTimeout(function () {
+        rc.className = "rv-card in0"; setCard(s); rChecks.forEach(function (c) { c.classList.remove("ok"); });
+        qItems.forEach(function (q, j) { q.className = j < i ? "done" : (j === i ? "now" : ""); });
+        void rc.offsetWidth; rc.className = "rv-card";
+      }, t0));
+      [350, 650, 950, 1350].forEach(function (d, k) { rvT.push(setTimeout(function () { rChecks[k].classList.add("ok"); }, t0 + d)); });
+      rvT.push(setTimeout(function () {
+        rc.className = "rv-card out"; chip(s.n); rCount.textContent = (i + 1) + "개"; qItems[i].className = "done";
+      }, t0 + 2100));
+    });
+    var end = 300 + SK.length * STEP;
+    rvT.push(setTimeout(rvFinal, end)); // 마지막 카드를 남긴 채 전체 27개를 보여 주고 멈춤
+    rvT.push(setTimeout(rvCycle, end + 3200));
+  }
+  rvFinal();
+  whenVisible(document.getElementById("reviewDemo"),
+    function () { if (rvOn) return; rvOn = true; if (!reduce.matches) rvCycle(); },
+    function () { rvOn = false; rvT.forEach(clearTimeout); rvT = []; rvFinal(); });
+
+  /* 3D 골 리플레이: 버튼을 누르면 그 자리에서 불러와 바로 재생 */
+  var r3 = document.getElementById("replay3d");
+  document.getElementById("play3d").addEventListener("click", function () {
+    var f = document.createElement("iframe");
+    f.src = "assets/motion/goal3d.html?embed&autoplay&round=18";
+    f.title = "3D 골 리플레이: 가상 리그 18라운드 (가상 데이터)";
+    f.allow = "fullscreen";
+    r3.innerHTML = ""; r3.appendChild(f);
+    function fit3() {
+      try { var w = f.contentDocument && f.contentDocument.querySelector(".wrap"); if (w) f.style.height = Math.ceil(w.getBoundingClientRect().height) + "px"; } catch (err) {}
+    }
+    f.addEventListener("load", function () { fit3(); setTimeout(fit3, 800); });
+    window.addEventListener("resize", function () { clearTimeout(fit3.t); fit3.t = setTimeout(fit3, 150); });
+    f.focus();
+  });
+
+  /* 모션 영상: iframe 높이를 내용에 맞춤(같은 출처일 때만, 아니면 CSS 기본 높이) */
+  var mf = document.querySelector(".motion-frame iframe");
+  function fitFrame() {
+    try {
+      var w = mf.contentDocument && mf.contentDocument.querySelector(".wrap");
+      if (w) mf.style.height = Math.ceil(w.getBoundingClientRect().height) + "px";
+    } catch (err) { /* file:// 등에서는 기본 높이 유지 */ }
+  }
+  mf.addEventListener("load", function () { fitFrame(); setTimeout(fitFrame, 600); });
+  window.addEventListener("resize", function () { clearTimeout(fitFrame.t); fitFrame.t = setTimeout(fitFrame, 150); });
+
+  demoFinal(); // 관찰이 늦거나 안 될 때도 완성된 화면을 먼저 보여 준다
+  if ("IntersectionObserver" in window) {
+    var once = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { play(); once.disconnect(); } }, { threshold: .5 });
+    once.observe(document.querySelector(".play"));
+    new IntersectionObserver(function (e) { if (e[0].isIntersecting) startLoop(); else stopLoop(); }, { threshold: .35 }).observe(demo);
+  } else { showFinal(); }
+})();
+</script>
+</body>
+</html>
