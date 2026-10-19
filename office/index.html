@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DH 타워 오피스</title>
+<meta name="description" content="Claude Code 세션 기록을 따라 읽어 움직이는 김동환의 가상 사무실">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;600;700&family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="office.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- 백화점 층별 안내 -->
+  <aside class="directory" aria-label="층별 안내">
+    <div class="dir-head">
+      <div class="bld">DH TOWER</div>
+      <div class="bld-sub">층별 안내 · FLOOR GUIDE</div>
+    </div>
+    <ol class="floors" id="floors"></ol>
+    <div class="dir-legend">
+      <span><i class="dot st-running"></i>작업</span>
+      <span><i class="dot st-thinking"></i>생각</span>
+      <span><i class="dot st-asking"></i>질문</span>
+      <span><i class="dot st-error"></i>실패</span>
+      <span><i class="dot st-idle"></i>휴식</span>
+    </div>
+    <div class="dir-foot"><span class="conn" id="conn">연결 중…</span></div>
+  </aside>
+
+  <main class="stage">
+    <header class="topbar">
+      <div class="elev-ind" id="elevInd" aria-live="polite"><span class="arrow" id="elevArrow"></span><span class="num" id="elevNum">–</span></div>
+      <div class="where">
+        <div class="floor-name" id="floorName">빌딩을 여는 중</div>
+        <div class="session-name" id="sessionName"></div>
+      </div>
+      <div class="status-pill" id="statusPill"></div>
+      <button class="follow on" id="followBtn" type="button" title="/clear 하면 같은 층의 새 세션으로 따라갑니다">자동 따라가기</button>
+    </header>
+
+    <div class="plan-wrap" id="planWrap">
+      <section class="plan" id="plan">
+
+        <div class="room" data-room="library" style="grid-area:lib">
+          <div class="room-label"><span>📚 자료실</span><b class="count"></b></div>
+          <div class="props">
+            <div class="shelves" id="shelves"></div>
+            <div class="flybook"></div>
+            <div class="card-file"><small>지금 읽는 파일</small><span class="v" data-v="file">—</span></div>
+            <div class="lamp-floor"></div>
+          </div>
+          <div class="staff" data-role="archivist"></div>
+          <div class="spot"></div>
+        </div>
+
+        <div class="room" data-room="dev" style="grid-area:dev">
+          <div class="room-label"><span>💻 개발실</span><b class="count"></b></div>
+          <div class="props">
+            <div class="imac">
+              <div class="screen">
+                <div class="tabbar"><i></i><i></i><i></i><span data-v="devfile">untitled</span></div>
+                <div class="code"><ol id="code"></ol></div>
+              </div>
+              <div class="chin"></div>
+              <div class="stand"></div>
+            </div>
+            <div class="deskline"></div>
+            <div class="plant"></div>
+          </div>
+          <div class="staff" data-role="dev"></div>
+          <div class="spot"></div>
+        </div>
+
+        <div class="room dark" data-room="server" style="grid-area:srv">
+          <div class="room-label"><span>🗄️ 서버실</span><b class="count"></b></div>
+          <div class="props">
+            <div class="racks" id="racks"></div>
+            <div class="term"><span class="prompt">$</span> <span data-v="command">대기 중</span><span class="caret"></span></div>
+            <div class="git-badge">⎇ git</div>
+          </div>
+          <div class="staff" data-role="server"></div>
+          <div class="spot"></div>
+        </div>
+
+        <div class="corridor" style="grid-area:hall" data-room="lounge">
+          <div class="hall-sign">LOUNGE · 라운지</div>
+          <div class="cooler"><i></i></div>
+          <div class="sofa"></div>
+          <div class="minigoal"><i class="ball"></i></div>
+          <div class="pennant">DH FC</div>
+          <div class="spot"></div>
+          <div class="elevator-door" aria-hidden="true"><span class="ev-l"></span><span class="ev-r"></span><b>EV</b></div>
+        </div>
+
+        <div class="room" data-room="search" style="grid-area:sch">
+          <div class="room-label"><span>🌐 정보검색실</span><b class="count"></b></div>
+          <div class="props">
+            <div class="globe"><i></i><i></i><i></i></div>
+            <div class="browser"><div class="url"><span>🔍</span><span data-v="query">무엇이든 찾아드려요</span></div><div class="results"><i></i><i></i><i></i></div></div>
+            <div class="plugs"><span>MCP</span><i></i><i></i><i></i></div>
+          </div>
+          <div class="staff" data-role="scout"></div>
+          <div class="spot"></div>
+        </div>
+
+        <div class="room" data-room="meeting" style="grid-area:mtg">
+          <div class="room-label"><span>🗒️ 회의실</span><b class="count"></b></div>
+          <div class="props">
+            <div class="board"><div class="board-title">오늘의 작전판</div><ol id="plan-items"><li class="empty">계획이 생기면 여기에 적어요</li></ol><i class="marker"></i></div>
+            <div class="table"><i></i><i></i><i></i></div>
+          </div>
+          <div class="staff" data-role="planner"></div>
+          <div class="spot"></div>
+        </div>
+
+        <div class="room mine" data-room="desk" style="grid-area:desk">
+          <div class="room-label"><span>🧑‍💻 내 자리</span><b class="count"></b></div>
+          <div class="props">
+            <div class="mydesk"><div class="mon"><span>⚽</span></div><div class="mug"><i></i></div><div class="plate">김동환 · 주장</div><div class="frame"></div></div>
+            <div class="ask-card" id="askCard"><div class="q" data-v="question"></div><div class="opts" id="askOpts"></div></div>
+          </div>
+          <div class="staff" data-role="me"></div>
+          <div class="spot"></div>
+        </div>
+
+        <div class="actor runner" id="runner"><div class="bubble" id="runnerBubble"></div><div class="fig"></div><div class="tag">클로드 동환</div></div>
+
+        <div class="elevator" id="elevator" aria-hidden="true">
+          <div class="door l"></div><div class="door r"></div>
+          <div class="elev-panel"><span id="elevPanelArrow">▲</span><span id="elevPanelNum">1F</span></div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="bottom">
+      <ol class="log" id="log"></ol>
+      <details class="crew">
+        <summary>오피스 사람들 소개</summary>
+        <ul id="crew"></ul>
+      </details>
+    </footer>
+  </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="core/state.js"></script>
+<script src="core/demo.js"></script>
+<script src="avatars.js"></script>
+<script src="office.js"></script>
+</body>
+</html>

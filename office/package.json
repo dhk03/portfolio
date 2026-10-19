@@ -1,0 +1,11 @@
+{
+  "name": "dh-tower-office",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Claude Code 세션 기록(jsonl)을 따라 읽어 움직이는 가상 사무실",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node server.js --demo"
+  },
+  "engines": { "node": ">=18" }
+}
