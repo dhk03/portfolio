@@ -91,7 +91,25 @@
     this.perFloor = opts.perFloor || 8;
     this.onFx = opts.onFx || function () {};
     this.now = opts.now || function () { return Date.now(); };
+    this.floorConfig = opts.floors || [];
     this.version = 0;
+  }
+
+  /*
+   * 층 설정(office.config.json의 floors) — 프로젝트를 이름 붙인 층으로 연결한다.
+   *   { "match": "sports-data-portal", "name": "sports2i 데이터 포털", "tag": "ADMIN", "floor": 5, "link": "http://localhost:8000" }
+   * match는 프로젝트 폴더 이름(또는 그 일부, 배열 가능)이다. 설정한 층은 세션이 없어도 안내판에 남는다.
+   */
+  function matchFloor(config, p) {
+    var keys = [base(p.cwd), p.name, p.key].filter(Boolean).map(function (v) { return String(v).toLowerCase(); });
+    for (var i = 0; i < (config || []).length; i++) {
+      var c = config[i], ms = [].concat(c.match || []);
+      for (var j = 0; j < ms.length; j++) {
+        var m = String(ms[j]).toLowerCase();
+        if (m && keys.some(function (k) { return k === m || k.indexOf(m) >= 0; })) return c;
+      }
+    }
+    return null;
   }
 
   Office.prototype.session = function (pkey, sid) {
@@ -247,20 +265,37 @@
   Office.prototype.snapshot = function () {
     var now = this.now(), self = this;
     var projects = Object.keys(this.projects).map(function (k) { return self.projects[k]; });
+    var used = [];
     var floors = projects.map(function (p) {
       var sessions = Object.keys(p.sessions).map(function (k) { return p.sessions[k]; })
         .filter(function (s) { return s.lastTs && now - s.lastTs < self.maxAge; })
         .sort(function (a, b) { return b.lastTs - a.lastTs; })
         .slice(0, self.perFloor);
-      return { p: p, sessions: sessions };
+      var cfg = matchFloor(self.floorConfig, p);
+      if (cfg && sessions.length) used.push(cfg);
+      return { p: p, sessions: sessions, cfg: cfg };
     }).filter(function (f) { return f.sessions.length; });
+    // 설정했지만 아직 세션이 없는 층은 '입점 준비 중'으로 남긴다
+    self.floorConfig.forEach(function (c) {
+      if (used.indexOf(c) >= 0 || c.keep === false) return;
+      var m = [].concat(c.match || [])[0] || "floor";
+      floors.push({ p: { key: "cfg:" + m, name: m, cwd: "", firstTs: Infinity }, sessions: [], cfg: c });
+    });
     floors.sort(function (a, b) { return a.p.firstTs - b.p.firstTs || (a.p.name < b.p.name ? -1 : 1); });
+    // 층 번호: 설정에서 정한 번호를 먼저 쓰고, 나머지는 빈 번호를 아래부터 채운다
+    var taken = {};
+    floors.forEach(function (f) { if (f.cfg && f.cfg.floor > 0 && !taken[f.cfg.floor]) { f.n = f.cfg.floor; taken[f.n] = true; } });
+    var next = 1;
+    floors.forEach(function (f) { if (f.n) return; while (taken[next]) next++; f.n = next; taken[next] = true; });
+    floors.sort(function (a, b) { return a.n - b.n; });
     return {
       now: now,
-      floors: floors.map(function (f, i) {
+      floors: floors.map(function (f) {
+        var c = f.cfg || {};
         return {
-          key: f.p.key, name: f.p.name, cwd: f.p.cwd, floor: i + 1,
-          live: f.sessions[0].id,
+          key: f.p.key, name: c.name || f.p.name, cwd: f.p.cwd, floor: f.n, tag: c.tag || "", link: c.link || "",
+          live: f.sessions.length ? f.sessions[0].id : null,
+          empty: !f.sessions.length,
           active: f.sessions.some(function (s) { return s.status !== "idle"; }),
           sessions: f.sessions.map(publicSession)
         };
@@ -284,5 +319,5 @@
     return parts.length ? parts[parts.length - 1] : k;
   }
 
-  return { Office: Office, ROOMS: ROOMS, roomFor: roomFor };
+  return { Office: Office, ROOMS: ROOMS, roomFor: roomFor, matchFloor: matchFloor };
 });

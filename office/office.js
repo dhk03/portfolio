@@ -87,11 +87,12 @@
         return '<li><button class="store' + (sel ? " selected" : "") + '" data-floor="' + esc(f.key) + '" data-sid="' + esc(s.id) + '" title="' + esc(s.prompt || s.title) + '">' +
           '<i class="dot st-' + s.status + '"></i><span class="sname">' + esc(s.title) + "</span>" +
           (s.id === f.live ? '<span class="live-tag">LIVE</span>' : '<span class="age">' + age(s.lastTs) + "</span>") + "</button></li>";
-      }).join("");
-      return '<li class="floor' + (f.key === cur.floor ? " current" : "") + (f.active ? " active" : "") + '">' +
-        '<button class="floor-btn" data-floor="' + esc(f.key) + '"><span class="fl">' + f.floor + 'F</span><span class="fname">' + esc(f.name) +
-        "<small>매장 " + f.sessions.length + "곳</small></span><span class=\"lamp\"></span></button>" +
-        '<ul class="stores">' + stores + "</ul></li>";
+      }).join("") || '<li class="store-empty">입점 준비 중 · 이 프로젝트에서 Claude Code를 열면 불이 켜져요</li>';
+      var link = /^https?:\/\//.test(f.link || "") ? '<li><a class="floor-link" href="' + esc(f.link) + '" target="_blank" rel="noopener">↗ 화면 열기 <span>' + esc(f.link.replace(/^https?:\/\//, "")) + "</span></a></li>" : "";
+      return '<li class="floor' + (f.key === cur.floor ? " current" : "") + (f.active ? " active" : "") + (f.empty ? " empty" : "") + '">' +
+        '<button class="floor-btn" data-floor="' + esc(f.key) + '" title="' + esc(f.name) + '"><span class="fl">' + f.floor + 'F</span><span class="fname">' + esc(f.name) +
+        "<small>" + (f.tag ? '<em class="ftag">' + esc(f.tag) + "</em>" : "") + (f.empty ? "입점 준비 중" : "매장 " + f.sessions.length + "곳") + "</small></span><span class=\"lamp\"></span></button>" +
+        '<ul class="stores">' + link + stores + "</ul></li>";
     }).join("") || '<li class="empty-floors">아직 입주한 프로젝트가 없어요.<br>Claude Code를 실행하면 층이 생깁니다.</li>';
     if (html !== lastDir) { $("#floors").innerHTML = html; lastDir = html; }
   }
@@ -124,7 +125,7 @@
     var f = floorObj(cur.floor);
     if (!f) return null;
     var s = f.sessions.filter(function (x) { return x.id === cur.sid; })[0];
-    if (!s) { s = f.sessions[0]; cur.sid = s.id; }
+    if (!s) { s = f.sessions[0] || null; cur.sid = s ? s.id : null; }
     return s;
   }
 
@@ -138,6 +139,17 @@
     }
     if (!moving) setIndicator("", f.floor);
     var s = currentSession();
+    if (!s) {
+      // 설정만 해 두고 아직 세션이 없는 층: 불 꺼진 빈 사무실
+      $("#floorName").textContent = f.floor + "F · " + f.name;
+      $("#sessionName").textContent = "아직 이 층에서 열린 Claude Code 세션이 없어요";
+      $("#statusPill").textContent = "🚪 입점 준비 중"; $("#statusPill").className = "status-pill";
+      W.setActive(null); W.setBusy(null); W.setCounts({}); W.setQuestion(null); W.setFile("");
+      W.setRunnerVisible(false); lastQ = null;
+      $("#stage3d").classList.add("vacant");
+      return;
+    }
+    $("#stage3d").classList.remove("vacant");
     $("#floorName").textContent = f.floor + "F · " + f.name;
     $("#sessionName").textContent = s.title + (s.prompt ? " — " + s.prompt : "");
     $("#statusPill").textContent = STATUS[s.status](s);
@@ -175,11 +187,11 @@
     clockSkew = snap.now - Date.now();
     floors = snap.floors;
     if (!floorObj(cur.floor)) {
-      var pick = floors.filter(function (f) { return f.active; })[0] || floors.slice().sort(function (a, b) { return b.sessions[0].lastTs - a.sessions[0].lastTs; })[0];
+      var pick = floors.filter(function (f) { return f.active; })[0] || floors.filter(function (f) { return !f.empty; }).sort(function (a, b) { return b.sessions[0].lastTs - a.sessions[0].lastTs; })[0];
       if (pick) { cur.floor = pick.key; cur.sid = pick.live; }
     }
     var f = floorObj(cur.floor);
-    if (f && cur.follow && f.live !== cur.sid) {
+    if (f && cur.follow && f.live && f.live !== cur.sid) {
       if (prevLive[f.key] && prevLive[f.key] !== f.live) toast("🧹 /clear — 같은 층 새 세션으로 따라왔어요");
       cur.sid = f.live;
     }
@@ -235,17 +247,42 @@
   var params = new URLSearchParams(location.search);
   function setConn(mode, text) { var c = $("#conn"); c.className = "conn " + mode; c.textContent = text; }
 
-  function startDemo() {
+  // 파일로 열었을 때: 내 PC의 오피스 서버가 켜져 있으면 그쪽으로 옮겨 간다(이미지 한 장으로 확인)
+  var LOCAL = "http://127.0.0.1:" + (params.get("port") || 4317) + "/";
+  function probeLocal(cb) {
+    var img = new Image(), done = false;
+    function end(ok) { if (!done) { done = true; cb(ok); } }
+    img.onload = function () { end(true); };
+    img.onerror = function () { end(false); };
+    setTimeout(function () { end(false); }, 1200);
+    img.src = LOCAL + "icons/favicon-64.png?t=" + Date.now();
+  }
+  function showDemoBanner(why) {
+    var b = $("#demoBanner");
+    var local = location.protocol === "file:" || location.hostname === "127.0.0.1" || location.hostname === "localhost";
+    b.innerHTML = "<b>데모 화면이에요</b> · 가상 세션이라 실제 작업과 층 연결 설정이 보이지 않아요." +
+      (local ? "<br>office 폴더에서 <code>node server.js</code> 를 켜고 <a href=\"" + LOCAL + "\">" + LOCAL.replace(/\/$/, "") + "</a> 로 여세요." +
+        (why === "file" ? " 서버를 켜면 이 화면이 자동으로 넘어가요." : "")
+             : "<br>내 PC에서 보려면 office 폴더에서 <code>node server.js</code> 를 켜고 <a href=\"" + LOCAL + "\">" + LOCAL.replace(/\/$/, "") + "</a> 를 여세요.");
+    b.hidden = false;
+  }
+
+  function startDemo(why) {
     setConn("demo", "데모 모드 · 가상 세션 기록");
+    showDemoBanner(why);
+    if (why === "file") setInterval(function () { probeLocal(function (ok) { if (ok) location.replace(LOCAL); }); }, 4000);
     var office = new OfficeCore.Office({ onFx: onFx });
     OfficeDemo.start(function (pk, sid, rec) { office.ingest(pk, sid, rec, false); });
     setInterval(function () { office.tick(); onSnapshot(office.snapshot()); }, 250);
   }
 
   function connect() {
-    if (location.protocol === "file:" || /github\.io$/.test(location.hostname) || params.has("demo") || !window.EventSource) return startDemo();
+    if (location.protocol === "file:" && !params.has("demo")) {
+      return probeLocal(function (ok) { if (ok) location.replace(LOCAL); else startDemo("file"); });
+    }
+    if (location.protocol === "file:" || /github\.io$/.test(location.hostname) || params.has("demo") || !window.EventSource) return startDemo("static");
     var es = new EventSource("events"), hello = false;
-    var fallback = setTimeout(function () { if (!hello) { es.close(); startDemo(); } }, 3000);
+    var fallback = setTimeout(function () { if (!hello) { es.close(); startDemo("noserver"); } }, 3000);
     es.addEventListener("hello", function (ev) {
       hello = true; clearTimeout(fallback);
       var h = JSON.parse(ev.data);
@@ -254,7 +291,7 @@
     es.addEventListener("snapshot", function (ev) { onSnapshot(JSON.parse(ev.data)); });
     es.addEventListener("fx", function (ev) { onFx(JSON.parse(ev.data)); });
     es.onerror = function () {
-      if (!hello) { clearTimeout(fallback); es.close(); startDemo(); }
+      if (!hello) { clearTimeout(fallback); es.close(); startDemo("noserver"); }
       else setConn("", "다시 연결 중…");
     };
   }

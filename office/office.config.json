@@ -1,0 +1,10 @@
+{
+  "floors": [
+    {
+      "match": ["sports-data-portal"],
+      "name": "sports2i 데이터 포털",
+      "tag": "ADMIN",
+      "link": "http://localhost:8000"
+    }
+  ]
+}

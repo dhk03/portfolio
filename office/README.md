@@ -20,7 +20,34 @@ node server.js --demo   # 가상 세션 기록을 임시 폴더에 쓰면서 시
 | `CLAUDE_PROJECTS` | `~/.claude/projects` | 읽을 세션 기록 폴더 |
 | `OFFICE_MAX_AGE_HOURS` | `72` | 이보다 오래 손대지 않은 세션은 빌딩에서 뺌 |
 
-서버 없이 `index.html`을 열거나 GitHub Pages(`/portfolio/office/`)에서 열면 브라우저 안에서 데모가 돌아갑니다.
+서버 없이 `index.html`을 열거나 GitHub Pages(`/portfolio/office/`)에서 열면 브라우저 안에서 데모가 돌아갑니다. 데모 화면에는 노란 안내가 뜨고, 실제 세션과 층 연결 설정은 보이지 않습니다.
+
+> **실제 세션은 반드시 http://127.0.0.1:4317 로 여세요.** `index.html`을 파일로 열었을 때 서버가 켜져 있으면 자동으로 그 주소로 넘어갑니다.
+
+## 층 연결 (`office.config.json`)
+
+프로젝트를 이름 붙인 층으로 연결합니다. 고치고 저장하면 서버가 2초 안에 다시 읽습니다.
+
+```json
+{
+  "floors": [
+    { "match": ["sports-data-portal"], "name": "sports2i 데이터 포털", "tag": "ADMIN", "link": "http://localhost:8000" }
+  ]
+}
+```
+
+| 키 | 설명 |
+| --- | --- |
+| `match` | 프로젝트 폴더 이름(또는 그 일부). 여러 개면 배열 |
+| `name` | 층별 안내·상태줄에 보일 이름 |
+| `tag` | 이름 아래 작은 배지 (예: `ADMIN`) |
+| `floor` | 층 번호 고정. 안 쓰면 처음 세션이 생긴 순서대로 빈 번호를 채움 |
+| `link` | 층 안내에 "↗ 화면 열기" 링크 (예: 그 프로젝트의 로컬 화면) |
+| `keep` | 기본 `true`. 세션이 없어도 "입점 준비 중"으로 안내판에 남김. `false`면 세션이 생길 때만 표시 |
+
+- 지금은 **sports2i 데이터 포털**(`dhk03/sports-data-portal`)이 연결돼 있습니다. 그 폴더에서 Claude Code를 열면 그 층에 불이 켜지고, 클로드 동환이 그 층에서 일합니다.
+- 포털 화면은 포털 폴더에서 `python -m http.server 8000`을 실행한 뒤 링크로 열 수 있습니다.
+- 다른 위치의 설정 파일을 쓰려면 `OFFICE_CONFIG` 환경 변수로 경로를 알려 주세요.
 
 ## 앱으로 설치 (PWA)
 
@@ -90,6 +117,7 @@ office/
 ├── scene3d.js       # Three.js 사무실(방·소품·화면 텍스처·말풍선 위치)
 ├── characters3d.js  # 직원 3D 모델
 ├── statusline.js    # Claude Code 상태줄 (--install / --uninstall)
+├── office.config.json  # 층 연결 설정 (이름·배지·층 번호·링크)
 ├── manifest.webmanifest, sw.js, icons/   # 앱으로 설치(PWA)
 └── vendor/          # three.min.js r158, RoundedBoxGeometry (MIT)
 ```

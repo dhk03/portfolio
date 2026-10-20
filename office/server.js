@@ -35,10 +35,27 @@ function argValue(name) {
   return i >= 0 ? args[i + 1] : null;
 }
 
+var CONFIG = process.env.OFFICE_CONFIG || path.join(__dirname, "office.config.json");
+var configMtime = 0;
+
 var clients = new Set();
 var office = new OfficeCore.Office({ maxAge: MAX_AGE, onFx: function (e) { broadcast("fx", e); } });
 var files = new Map(); // 경로 → { offset, partial, pkey, sid }
 var dirty = true;
+
+// 층 설정(office.config.json)은 고치면 바로 다시 읽는다
+function loadConfig() {
+  var st;
+  try { st = fs.statSync(CONFIG); } catch (e) { if (configMtime) { configMtime = 0; office.floorConfig = []; dirty = true; } return; }
+  if (st.mtimeMs === configMtime) return;
+  configMtime = st.mtimeMs;
+  try {
+    var cfg = JSON.parse(fs.readFileSync(CONFIG, "utf8"));
+    office.floorConfig = Array.isArray(cfg.floors) ? cfg.floors : [];
+    console.log("🗂️  층 설정 " + office.floorConfig.length + "개 읽음: " + CONFIG);
+  } catch (e) { console.error("⚠️  층 설정을 읽지 못했어요(" + e.message + "): " + CONFIG); }
+  dirty = true;
+}
 
 // ---------- tail ----------
 function scan() {
@@ -125,7 +142,8 @@ var server = http.createServer(function (req, res) {
 });
 
 setInterval(function () { clients.forEach(function (res) { res.write(": ping\n\n"); }); }, 15000);
-setInterval(scan, SCAN_MS);
+setInterval(function () { loadConfig(); scan(); }, SCAN_MS);
+loadConfig();
 setInterval(poll, POLL_MS);
 scan();
 

@@ -20,6 +20,7 @@ var OfficeCore = require("./core/state.js");
 var PORT = +(process.env.OFFICE_PORT || process.env.PORT || 4317);
 var TAIL_BYTES = 512 * 1024;
 var SETTINGS = path.join(os.homedir(), ".claude", "settings.json");
+var CONFIG = process.env.OFFICE_CONFIG || path.join(__dirname, "office.config.json");
 var SELF = __filename.replace(/\\/g, "/"); // Windows에서도 bash·cmd 모두 읽히게 슬래시로
 
 var C = {
@@ -63,9 +64,12 @@ function render(input, cb) {
   office.tick();
   var p = office.projects[pkey], s = p && p.sessions[sid];
   if (p && p.cwd && !project) project = path.basename(p.cwd);
+  var cfg = OfficeCore.matchFloor(readConfig(), { cwd: (p && p.cwd) || cwd, name: project, key: pkey });
+  if (cfg && cfg.name) project = cfg.name;
+  var tag = cfg && cfg.tag ? " " + C.bold + "[" + cfg.tag + "]" + C.reset : "";
 
   floorOf(sid, function (floor) {
-    var parts = [C.gold + C.bold + "🏢 " + (floor ? floor + "F " : "") + C.reset + C.gold + (project || "DH 타워") + C.reset];
+    var parts = [C.gold + C.bold + "🏢 " + (floor ? floor + "F " : "") + C.reset + C.gold + (project || "DH 타워") + C.reset + tag];
     parts.push(s ? describe(s) : "☕ 라운지에서 대기 중");
     if (s && s.plan && s.plan.length) {
       var done = s.plan.filter(function (t) { return t.status === "completed"; }).length;
@@ -118,6 +122,10 @@ function floorOf(sid, cb) {
   });
   req.on("timeout", function () { req.destroy(); once(null); });
   req.on("error", function () { once(null); });
+}
+
+function readConfig() {
+  try { return JSON.parse(fs.readFileSync(CONFIG, "utf8")).floors || []; } catch (e) { return []; }
 }
 
 function clip(s, n) { s = String(s || "").replace(/\s+/g, " ").trim(); return s.length > n ? s.slice(0, n - 1) + "…" : s; }
