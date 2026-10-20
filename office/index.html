@@ -42,7 +42,7 @@
         <div class="session-name" id="sessionName"></div>
       </div>
       <div class="status-pill" id="statusPill"></div>
-      <button class="install" id="installBtn" type="button" hidden>⬇︎ 앱으로 설치</button>
+      <button class="install" id="installBtn" type="button">⬇︎ 앱으로 설치</button>
       <button class="follow on" id="followBtn" type="button" title="/clear 하면 같은 층의 새 세션으로 따라갑니다">자동 따라가기</button>
     </header>
 
@@ -70,6 +70,11 @@
   </main>
 </div>
 <div class="toast" id="toast" role="status"></div>
+<dialog class="install-help" id="installHelp" aria-labelledby="installHelpTitle">
+  <h3 id="installHelpTitle">🏢 DH 오피스를 앱으로 설치하기</h3>
+  <div id="installHelpBody"></div>
+  <button type="button" data-close>알겠어요</button>
+</dialog>
 
 <script src="vendor/three.min.js"></script>
 <script src="vendor/RoundedBoxGeometry.js"></script>

@@ -271,6 +271,10 @@
     setConn("demo", "데모 모드 · 가상 세션 기록");
     showDemoBanner(why);
     if (why === "file") setInterval(function () { probeLocal(function (ok) { if (ok) location.replace(LOCAL); }); }, 4000);
+    // 서버 주소로 열었는데 서버가 꺼져 있었다면(설치한 앱 포함), 켜지는 순간 다시 불러온다
+    if (why === "noserver") setInterval(function () {
+      fetch("state", { cache: "no-store" }).then(function (r) { if (r.ok) location.reload(); }).catch(function () {});
+    }, 4000);
     var office = new OfficeCore.Office({ onFx: onFx });
     OfficeDemo.start(function (pk, sid, rec) { office.ingest(pk, sid, rec, false); });
     setInterval(function () { office.tick(); onSnapshot(office.snapshot()); }, 250);
@@ -300,16 +304,37 @@
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
     navigator.serviceWorker.register("sw.js").catch(function (e) { console.warn("서비스 워커 등록 실패", e); });
   }
+  // 버튼은 항상 보인다(설치된 앱 창 안에서만 숨김). 브라우저가 설치 창을 주면 그걸 띄우고, 아니면 방법을 안내한다.
   var installEvt = null;
-  window.addEventListener("beforeinstallprompt", function (e) {
-    e.preventDefault(); installEvt = e; $("#installBtn").hidden = false;
-  });
+  var standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  $("#installBtn").hidden = !!standalone;
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); installEvt = e; });
   $("#installBtn").addEventListener("click", function () {
-    if (!installEvt) return;
-    installEvt.prompt();
-    installEvt.userChoice.then(function () { installEvt = null; $("#installBtn").hidden = true; });
+    if (installEvt) {
+      installEvt.prompt();
+      installEvt.userChoice.then(function (r) { if (r.outcome === "accepted") $("#installBtn").hidden = true; installEvt = null; });
+      return;
+    }
+    showInstallHelp();
   });
   window.addEventListener("appinstalled", function () { $("#installBtn").hidden = true; toast("🏢 DH 오피스 앱을 설치했어요"); });
+
+  function showInstallHelp() {
+    var ua = navigator.userAgent, steps;
+    if (location.protocol === "file:") {
+      steps = "<p>파일로 연 화면은 앱으로 설치할 수 없어요.</p><ol><li>office 폴더에서 <code>node server.js</code> 를 켜고</li><li><a href=\"" + LOCAL + "\">" + LOCAL + "</a> 를 연 다음</li><li>이 버튼을 다시 눌러 주세요.</li></ol>";
+    } else if (/Edg\//.test(ua)) {
+      steps = "<ol><li>오른쪽 위 <b>⋯</b> 메뉴</li><li><b>앱</b> → <b>이 사이트를 앱으로 설치</b></li><li>이름을 확인하고 <b>설치</b></li></ol>";
+    } else if (/Chrome\//.test(ua)) {
+      steps = "<ol><li>주소창 오른쪽 끝의 <b>설치 아이콘</b>(모니터에 화살표)을 누르거나</li><li>오른쪽 위 <b>⋮</b> 메뉴 → <b>저장 및 공유</b>(또는 전송, 저장, 공유) → <b>페이지를 앱으로 설치</b></li><li><b>설치</b>를 누르면 별도 창으로 열려요</li></ol>";
+    } else {
+      steps = "<p>이 브라우저는 앱 설치를 지원하지 않아요. <b>크롬</b>이나 <b>엣지</b>로 <a href=\"" + LOCAL + "\">" + LOCAL + "</a> 를 열어 주세요.</p>";
+    }
+    $("#installHelpBody").innerHTML = steps + "<p class=\"muted\">이미 설치했다면 이 안내 대신 시작 메뉴나 작업 표시줄에서 <b>DH 오피스</b>를 열면 돼요.</p>";
+    var d = $("#installHelp");
+    if (d.showModal) d.showModal(); else d.setAttribute("open", "");
+  }
+  $("#installHelp").addEventListener("click", function (e) { if (e.target.id === "installHelp" || e.target.closest("[data-close]")) this.close(); });
 
   setInterval(renderDirectory, 15000);
   connect();
