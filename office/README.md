@@ -20,7 +20,9 @@ node server.js --demo   # 가상 세션 기록을 임시 폴더에 쓰면서 시
 | `CLAUDE_PROJECTS` | `~/.claude/projects` | 읽을 세션 기록 폴더 |
 | `OFFICE_MAX_AGE_HOURS` | `72` | 이보다 오래 손대지 않은 세션은 빌딩에서 뺌 |
 
-서버 없이 `index.html`을 열거나 GitHub Pages(`/portfolio/office/`)에서 열면 브라우저 안에서 데모가 돌아갑니다.
+서버 없이 `index.html`을 열거나 GitHub Pages(`/portfolio/office/`)에서 열면 브라우저 안에서 데모가 돌아갑니다. 데모 화면에는 노란 안내가 뜨고, 실제 세션과 층 연결 설정은 보이지 않습니다.
+
+> **실제 세션은 반드시 http://127.0.0.1:4317 로 여세요.** `index.html`을 파일로 열었을 때 서버가 켜져 있으면 자동으로 그 주소로 넘어갑니다.
 
 ## 층 연결 (`office.config.json`)
 

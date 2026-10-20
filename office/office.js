@@ -247,17 +247,42 @@
   var params = new URLSearchParams(location.search);
   function setConn(mode, text) { var c = $("#conn"); c.className = "conn " + mode; c.textContent = text; }
 
-  function startDemo() {
+  // 파일로 열었을 때: 내 PC의 오피스 서버가 켜져 있으면 그쪽으로 옮겨 간다(이미지 한 장으로 확인)
+  var LOCAL = "http://127.0.0.1:" + (params.get("port") || 4317) + "/";
+  function probeLocal(cb) {
+    var img = new Image(), done = false;
+    function end(ok) { if (!done) { done = true; cb(ok); } }
+    img.onload = function () { end(true); };
+    img.onerror = function () { end(false); };
+    setTimeout(function () { end(false); }, 1200);
+    img.src = LOCAL + "icons/favicon-64.png?t=" + Date.now();
+  }
+  function showDemoBanner(why) {
+    var b = $("#demoBanner");
+    var local = location.protocol === "file:" || location.hostname === "127.0.0.1" || location.hostname === "localhost";
+    b.innerHTML = "<b>데모 화면이에요</b> · 가상 세션이라 실제 작업과 층 연결 설정이 보이지 않아요." +
+      (local ? "<br>office 폴더에서 <code>node server.js</code> 를 켜고 <a href=\"" + LOCAL + "\">" + LOCAL.replace(/\/$/, "") + "</a> 로 여세요." +
+        (why === "file" ? " 서버를 켜면 이 화면이 자동으로 넘어가요." : "")
+             : "<br>내 PC에서 보려면 office 폴더에서 <code>node server.js</code> 를 켜고 <a href=\"" + LOCAL + "\">" + LOCAL.replace(/\/$/, "") + "</a> 를 여세요.");
+    b.hidden = false;
+  }
+
+  function startDemo(why) {
     setConn("demo", "데모 모드 · 가상 세션 기록");
+    showDemoBanner(why);
+    if (why === "file") setInterval(function () { probeLocal(function (ok) { if (ok) location.replace(LOCAL); }); }, 4000);
     var office = new OfficeCore.Office({ onFx: onFx });
     OfficeDemo.start(function (pk, sid, rec) { office.ingest(pk, sid, rec, false); });
     setInterval(function () { office.tick(); onSnapshot(office.snapshot()); }, 250);
   }
 
   function connect() {
-    if (location.protocol === "file:" || /github\.io$/.test(location.hostname) || params.has("demo") || !window.EventSource) return startDemo();
+    if (location.protocol === "file:" && !params.has("demo")) {
+      return probeLocal(function (ok) { if (ok) location.replace(LOCAL); else startDemo("file"); });
+    }
+    if (location.protocol === "file:" || /github\.io$/.test(location.hostname) || params.has("demo") || !window.EventSource) return startDemo("static");
     var es = new EventSource("events"), hello = false;
-    var fallback = setTimeout(function () { if (!hello) { es.close(); startDemo(); } }, 3000);
+    var fallback = setTimeout(function () { if (!hello) { es.close(); startDemo("noserver"); } }, 3000);
     es.addEventListener("hello", function (ev) {
       hello = true; clearTimeout(fallback);
       var h = JSON.parse(ev.data);
@@ -266,7 +291,7 @@
     es.addEventListener("snapshot", function (ev) { onSnapshot(JSON.parse(ev.data)); });
     es.addEventListener("fx", function (ev) { onFx(JSON.parse(ev.data)); });
     es.onerror = function () {
-      if (!hello) { clearTimeout(fallback); es.close(); startDemo(); }
+      if (!hello) { clearTimeout(fallback); es.close(); startDemo("noserver"); }
       else setConn("", "다시 연결 중…");
     };
   }
