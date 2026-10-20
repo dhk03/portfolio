@@ -69,6 +69,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .floor.current .fl { background: linear-gradient(180deg, #F3C843, #D9A114); color: #1C1608; }
 .fname { font-weight: 600; font-size: 14.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .fname small { display: block; font-weight: 400; font-size: 11px; color: var(--kiosk-muted); margin-top: 1px; }
+.floor { position: relative; }
+.ftag { font-style: normal; font-size: 9px; font-weight: 700; letter-spacing: .06em; color: #1C1608; background: var(--gold); border-radius: 4px; padding: 0 4px; margin-right: 6px; }
+.floor-link { display: flex; gap: 6px; align-items: baseline; padding: 5px 8px; border-radius: 10px; font-size: 12px; color: var(--gold); text-decoration: none; white-space: nowrap; overflow: hidden; }
+.floor-link span { color: var(--kiosk-muted); font-size: 10.5px; overflow: hidden; text-overflow: ellipsis; }
+.floor-link:hover { background: rgba(232,178,30,.12); }
+.floor.empty { border-style: dashed; }
+.floor.empty .fl { color: var(--kiosk-muted); }
+.store-empty { font-size: 11.5px; color: var(--kiosk-muted); padding: 4px 8px; line-height: 1.5; }
 .lamp { width: 10px; height: 10px; border-radius: 50%; background: #2B313B; }
 .floor.active .lamp { background: var(--live); box-shadow: 0 0 0 4px rgba(52,210,123,.15), 0 0 14px var(--live); animation: lamp 1.8s ease-in-out infinite; }
 @keyframes lamp { 50% { box-shadow: 0 0 0 7px rgba(52,210,123,.06), 0 0 6px var(--live); } }
@@ -127,6 +135,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .overlay { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .ov { position: absolute; left: 0; top: 0; will-change: transform; }
 .hint { position: absolute; right: 16px; bottom: 14px; font-size: 11px; color: var(--muted); background: var(--surface); padding: 5px 10px; border-radius: 99px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.stage3d canvas { transition: filter .5s; }
+.stage3d.vacant canvas { filter: grayscale(.85) brightness(.82) contrast(.9); }
+.stage3d.vacant .overlay { opacity: .25; }
+.stage3d.vacant::after {
+  content: "🚪 입점 준비 중"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 14px 24px; border-radius: 18px;
+  font-weight: 700; font-size: 18px; color: #fff; background: rgba(18,21,27,.82); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 16px 40px -16px rgba(0,0,0,.6);
+}
 .noscene { display: none; position: absolute; inset: 0; place-items: center; color: var(--muted); }
 .noscene.show { display: grid; }
 
