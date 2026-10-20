@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DH 타워 오피스</title>
+<meta name="description" content="Claude Code 세션 기록을 따라 읽어 움직이는 김동환의 3D 가상 사무실">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="office.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- 백화점 층별 안내 -->
+  <aside class="directory" aria-label="층별 안내">
+    <div class="dir-head">
+      <div class="bld">DH TOWER</div>
+      <div class="bld-sub">FLOOR GUIDE · 층별 안내</div>
+    </div>
+    <ol class="floors" id="floors"></ol>
+    <div class="dir-legend">
+      <span><i class="dot st-running"></i>작업</span>
+      <span><i class="dot st-thinking"></i>생각</span>
+      <span><i class="dot st-asking"></i>질문</span>
+      <span><i class="dot st-error"></i>실패</span>
+      <span><i class="dot st-idle"></i>휴식</span>
+    </div>
+    <div class="dir-foot"><span class="conn" id="conn">연결 중…</span></div>
+  </aside>
+
+  <main class="stage">
+    <header class="topbar">
+      <div class="elev-ind" id="elevInd" aria-live="polite"><span class="arrow" id="elevArrow"></span><span class="num" id="elevNum">–</span></div>
+      <div class="where">
+        <div class="floor-name" id="floorName">빌딩을 여는 중</div>
+        <div class="session-name" id="sessionName"></div>
+      </div>
+      <div class="status-pill" id="statusPill"></div>
+      <button class="follow on" id="followBtn" type="button" title="/clear 하면 같은 층의 새 세션으로 따라갑니다">자동 따라가기</button>
+    </header>
+
+    <section class="stage3d" id="stage3d" aria-label="3D 사무실">
+      <div class="overlay" id="overlay"></div>
+      <div class="elevator" id="elevator" aria-hidden="true">
+        <div class="door l"></div><div class="door r"></div>
+        <div class="elev-panel"><span id="elevPanelArrow">▲</span><span id="elevPanelNum">1F</span></div>
+      </div>
+      <div class="hint">드래그로 둘러보기 · 더블클릭으로 원위치</div>
+      <div class="noscene" id="noscene">3D를 켤 수 없는 브라우저예요 (WebGL 필요)</div>
+    </section>
+
+    <footer class="bottom">
+      <section class="panel">
+        <h2>실시간 로그</h2>
+        <ol class="log" id="log"></ol>
+      </section>
+      <section class="panel crew-panel">
+        <h2>오피스 사람들 <small>전원 김동환의 분신</small></h2>
+        <ul class="crew" id="crew"></ul>
+      </section>
+    </footer>
+  </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/RoundedBoxGeometry.js"></script>
+<script src="core/state.js"></script>
+<script src="core/demo.js"></script>
+<script src="characters3d.js"></script>
+<script src="scene3d.js"></script>
+<script src="office.js"></script>
+</body>
+</html>
