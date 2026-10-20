@@ -9,6 +9,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=DotGothic16&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="office.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#12151B">
+<link rel="icon" type="image/png" href="icons/favicon-64.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
 <div class="app">
@@ -38,6 +42,7 @@
         <div class="session-name" id="sessionName"></div>
       </div>
       <div class="status-pill" id="statusPill"></div>
+      <button class="install" id="installBtn" type="button" hidden>⬇︎ 앱으로 설치</button>
       <button class="follow on" id="followBtn" type="button" title="/clear 하면 같은 층의 새 세션으로 따라갑니다">자동 따라가기</button>
     </header>
 

@@ -96,7 +96,7 @@ function broadcast(event, data) {
   clients.forEach(function (res) { res.write(payload); });
 }
 
-var MIME = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".json": "application/json", ".png": "image/png", ".ico": "image/x-icon" };
+var MIME = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".json": "application/json", ".webmanifest": "application/manifest+json", ".png": "image/png", ".ico": "image/x-icon" };
 
 var server = http.createServer(function (req, res) {
   var url = new URL(req.url, "http://localhost");

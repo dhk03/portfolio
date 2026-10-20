@@ -259,6 +259,21 @@
     };
   }
 
+  // ---------- 앱으로 설치 (PWA) ----------
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    navigator.serviceWorker.register("sw.js").catch(function (e) { console.warn("서비스 워커 등록 실패", e); });
+  }
+  var installEvt = null;
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); installEvt = e; $("#installBtn").hidden = false;
+  });
+  $("#installBtn").addEventListener("click", function () {
+    if (!installEvt) return;
+    installEvt.prompt();
+    installEvt.userChoice.then(function () { installEvt = null; $("#installBtn").hidden = true; });
+  });
+  window.addEventListener("appinstalled", function () { $("#installBtn").hidden = true; toast("🏢 DH 오피스 앱을 설치했어요"); });
+
   setInterval(renderDirectory, 15000);
   connect();
 })();

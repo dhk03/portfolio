@@ -1,0 +1,17 @@
+{
+  "name": "DH 타워 오피스",
+  "short_name": "DH 오피스",
+  "description": "Claude Code 세션 기록을 따라 움직이는 3D 가상 사무실",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F3F0EB",
+  "theme_color": "#12151B",
+  "lang": "ko",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

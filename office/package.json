@@ -5,7 +5,11 @@
   "description": "Claude Code 세션 기록(jsonl)을 따라 읽어 움직이는 가상 사무실",
   "scripts": {
     "start": "node server.js",
-    "demo": "node server.js --demo"
+    "demo": "node server.js --demo",
+    "statusline:install": "node statusline.js --install",
+    "statusline:uninstall": "node statusline.js --uninstall"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  }
 }
