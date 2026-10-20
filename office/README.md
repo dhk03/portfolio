@@ -22,6 +22,32 @@ node server.js --demo   # 가상 세션 기록을 임시 폴더에 쓰면서 시
 
 서버 없이 `index.html`을 열거나 GitHub Pages(`/portfolio/office/`)에서 열면 브라우저 안에서 데모가 돌아갑니다.
 
+## 앱으로 설치 (PWA)
+
+서버를 켠 상태로 크롬이나 엣지에서 http://127.0.0.1:4317 을 열고, 오른쪽 위 **⬇︎ 앱으로 설치** 버튼을 누르거나 주소창 오른쪽의 설치 아이콘을 누르세요.
+주소창 없는 별도 창으로 열리고, 시작 메뉴와 작업 표시줄에 고정할 수 있습니다.
+
+- 서버(`node server.js`)는 계속 켜 두어야 실제 세션이 보입니다. 서버가 꺼져 있으면 앱은 데모로 열립니다.
+- 화면 파일은 캐시하지만 실시간 데이터(`/events`, `/state`)는 캐시하지 않습니다.
+
+## Claude Code 상태줄
+
+```bash
+node statusline.js --install     # ~/.claude/settings.json 에 등록 (기존 설정은 settings.json.bak-office 로 백업)
+node statusline.js --uninstall   # 해제, 원래 상태줄이 있었다면 되돌림
+```
+
+Claude Code를 새로 열면 입력창 아래에 이렇게 보입니다.
+
+```
+🏢 1F portfolio │ ● 🗄️ 서버실 · 클로드 동환 Bash npm test │ 🗒️ 작전판 2/5 │ 💦 실패 1
+```
+
+- 상태줄은 그 세션의 기록을 직접 읽어서 오피스와 같은 규칙으로 계산합니다. 그래서 서버가 꺼져 있어도 동작합니다.
+- 서버가 켜져 있으면 몇 층인지(`1F`)가 붙습니다.
+- 상태: `●` 작업, `💭` 생각, `🙋` 질문, `💦` 실패, `☕` 쉬는 중
+- 서버 포트를 바꿨다면 `OFFICE_PORT` 환경 변수로 알려 주세요.
+
 ## 방 배치
 
 | 방 | 담당자 | 도구 |
@@ -63,6 +89,8 @@ office/
 ├── office.js        # SSE를 받아 화면을 그림, 서버가 없으면 데모로 전환
 ├── scene3d.js       # Three.js 사무실(방·소품·화면 텍스처·말풍선 위치)
 ├── characters3d.js  # 직원 3D 모델
+├── statusline.js    # Claude Code 상태줄 (--install / --uninstall)
+├── manifest.webmanifest, sw.js, icons/   # 앱으로 설치(PWA)
 └── vendor/          # three.min.js r158, RoundedBoxGeometry (MIT)
 ```
 
