@@ -38,6 +38,15 @@ function argValue(name) {
 var CONFIG = process.env.OFFICE_CONFIG || path.join(__dirname, "office.config.json");
 var configMtime = 0;
 
+// --log 파일: 창 없이(자동 시작) 돌 때 출력을 파일에 남긴다
+var LOG = process.env.OFFICE_LOG || argValue("--log");
+if (LOG) {
+  var logStream = fs.createWriteStream(LOG, { flags: "a" });
+  ["log", "error", "warn"].forEach(function (k) {
+    console[k] = function () { logStream.write("[" + new Date().toISOString() + "] " + Array.prototype.join.call(arguments, " ") + "\n"); };
+  });
+}
+
 var clients = new Set();
 var office = new OfficeCore.Office({ maxAge: MAX_AGE, onFx: function (e) { broadcast("fx", e); } });
 var files = new Map(); // 경로 → { offset, partial, pkey, sid }
@@ -157,6 +166,14 @@ if (DEMO) {
   process.on("exit", function () { try { fs.rmSync(ROOT, { recursive: true, force: true }); } catch (e) {} });
   process.on("SIGINT", function () { process.exit(0); });
 }
+
+server.on("error", function (e) {
+  if (e.code === "EADDRINUSE") {
+    console.log("ℹ️  " + PORT + "번 포트에서 오피스가 이미 켜져 있어요 → http://127.0.0.1:" + PORT);
+    process.exit(0);
+  }
+  throw e;
+});
 
 server.listen(PORT, HOST, function () {
   console.log("🏢 Claude Code 오피스 → http://" + (HOST === "0.0.0.0" ? "localhost" : HOST) + ":" + PORT);

@@ -24,6 +24,19 @@ node server.js --demo   # 가상 세션 기록을 임시 폴더에 쓰면서 시
 
 > **실제 세션은 반드시 http://127.0.0.1:4317 로 여세요.** `index.html`을 파일로 열었을 때 서버가 켜져 있으면 자동으로 그 주소로 넘어갑니다.
 
+## 윈도우에서 자동으로 켜기
+
+| 파일 (더블클릭) | 하는 일 |
+| --- | --- |
+| `autostart-on.bat` | 로그인할 때마다 오피스 서버가 **창 없이** 켜지도록 등록하고, 지금 바로 켬 |
+| `autostart-off.bat` | 자동 시작 해제 |
+| `start-office.bat` | 지금 서버를 켜고 브라우저로 오피스를 엶 (이미 켜져 있으면 그대로 엶) |
+
+- 명령으로는 `node autostart.js --install`, `--uninstall`, `--status`를 씁니다.
+- 시작프로그램 폴더(`%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup`)에 `DH-Tower-Office.vbs`를 둡니다. 이 파일이 `node server.js --log office.log`를 창 없이 실행합니다.
+- 서버 출력은 `office/office.log`에 남습니다. 서버가 이미 켜져 있으면 두 번째 실행은 조용히 끝납니다.
+- office 폴더를 다른 곳으로 옮겼다면 `autostart-on.bat`을 다시 실행해 주세요. 경로가 등록 파일에 적혀 있습니다.
+
 ## 층 연결 (`office.config.json`)
 
 프로젝트를 이름 붙인 층으로 연결합니다. 고치고 저장하면 서버가 2초 안에 다시 읽습니다.
@@ -51,10 +64,10 @@ node server.js --demo   # 가상 세션 기록을 임시 폴더에 쓰면서 시
 
 ## 앱으로 설치 (PWA)
 
-서버를 켠 상태로 크롬이나 엣지에서 http://127.0.0.1:4317 을 열고, 오른쪽 위 **⬇︎ 앱으로 설치** 버튼을 누르거나 주소창 오른쪽의 설치 아이콘을 누르세요.
+서버를 켠 상태로 크롬이나 엣지에서 http://127.0.0.1:4317 을 열고, 오른쪽 위 **⬇︎ 앱으로 설치** 버튼을 누르세요. 브라우저가 설치 창을 바로 띄우지 않으면 브라우저별 설치 방법이 안내됩니다.
 주소창 없는 별도 창으로 열리고, 시작 메뉴와 작업 표시줄에 고정할 수 있습니다.
 
-- 서버(`node server.js`)는 계속 켜 두어야 실제 세션이 보입니다. 서버가 꺼져 있으면 앱은 데모로 열립니다.
+- 서버(`node server.js`)는 계속 켜 두어야 실제 세션이 보입니다. 자동 시작을 켜 두면 신경 쓸 필요가 없습니다. 서버가 꺼져 있으면 앱은 데모로 열렸다가, 서버가 켜지면 저절로 실제 화면으로 바뀝니다.
 - 화면 파일은 캐시하지만 실시간 데이터(`/events`, `/state`)는 캐시하지 않습니다.
 
 ## Claude Code 상태줄
@@ -117,6 +130,8 @@ office/
 ├── scene3d.js       # Three.js 사무실(방·소품·화면 텍스처·말풍선 위치)
 ├── characters3d.js  # 직원 3D 모델
 ├── statusline.js    # Claude Code 상태줄 (--install / --uninstall)
+├── autostart.js     # 윈도우 로그인 시 자동 시작 (--install / --uninstall / --status)
+├── autostart-on.bat, autostart-off.bat, start-office.bat   # 더블클릭용
 ├── office.config.json  # 층 연결 설정 (이름·배지·층 번호·링크)
 ├── manifest.webmanifest, sw.js, icons/   # 앱으로 설치(PWA)
 └── vendor/          # three.min.js r158, RoundedBoxGeometry (MIT)
